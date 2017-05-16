@@ -1,0 +1,373 @@
+<!DOCTYPE html>  
+<html>
+<head>
+    <title>Bitcoin Transaction Visualization</title>
+    <meta charset="utf-8" /> 
+    <script src="lib/jquery/external/jquery/jquery.js"></script>
+    <link rel="stylesheet" href="lib/jquery/jquery-ui.min.css">
+    <script src="lib/jquery/jquery-ui.min.js"></script>
+      <!--   <link rel="stylesheet" href="jqueryui/style.css"> -->
+    <link rel="stylesheet" type="text/css" href="css/realtime.css"/>
+    <script type="text/javascript" src="lib/d3.js"></script>
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- 可选的Bootstrap主题文件（一般不使用） -->
+    <script src="lib/bootstrap.min.js"></script>
+    <style type="text/css">
+    .ui-slider-tooltip{
+        /*background: url(http://s1.postimg.org/vsg0yj2mj/tooltip.png) no-repeat 50% 50%;*/
+        position: absolute;
+        display: block;
+        top: -20px;
+        width: 21px;
+        height: 19px;
+        color: white;
+        text-align: center;
+        color: grey;
+        font: 15px Arial, sans-serif;
+    }
+   .ui-slider-handle {
+        position: absolute;
+        z-index: 2;
+        width: 29px;
+        height: 31px;
+        cursor: pointer;
+               /*background: url('http://s24.postimg.org/lltizgrj5/handler.png') no-repeat 50% 50%;*/
+        outline: none;
+        top: -7px;
+        color: white;
+        margin-left: -12px;
+    }
+    .axis path,
+    .axis line{
+        fill: none;
+        stroke: black;
+        shape-rendering: crispEdges;
+    }
+
+    .axis text {
+        font-family: sans-serif;
+        font-size: 11px;
+    }
+
+    /*.MyRect {
+        fill: grey;
+    }*/
+
+    .MyText {
+        fill: black;
+        text-anchor: middle;
+    }
+    .navbar{
+        position:absolute;
+        top:0%;
+        height: 4%;
+        width: 100%;
+        opacity: 0.8
+
+    }
+    #content{
+        position:absolute;
+        overflow: hidden;
+        top:0%;
+        left: 0%;
+        width: 100%;
+        height:79%;
+    }
+    #shootGroup{
+        position:absolute;
+        top:8%;
+        right:0px;
+        background: white;
+        overflow:scroll;
+        /*overflow-x: hidden;*/
+        width:10%;
+        height:71%;
+        border-left:2px solid #aaa;
+    }
+    #slider-range-min{
+        position:absolute;
+        top:95%;
+        right :5%;
+        width: 15%;
+    }
+    #timeBar{
+        position:absolute;
+        overflow: hidden;
+        top:79%;
+        width: 100%; 
+        height: 21%;
+        border:2px solid #aaa;
+    }
+  /*  #info_block{
+        position:absolute;
+        top:250px;
+        left:5px;
+        padding:10px;
+        width:280px;
+        height:150px;
+        background:white;
+        border:1px solid #aaa;
+        opacity: 0.5
+    }*/
+    #allInfo{
+        position:absolute;
+        top:7%;
+        left:5px;
+        width:180px;
+        height:80px;
+        /*background:white;*/
+        border:3px solid #aaa;     
+    }
+    #allTxTitle{
+        position:absolute;
+        top:0px;
+        width: 100%;
+        height:20px;
+        overflow:hidden;
+        text-align:center;
+        font-weight:blod;
+        background:#aaa;
+    }
+    #allID{
+        position:absolute;
+        top:20px;
+        padding-left: 5px;
+        width: 100%;
+        height:20px;
+    }
+    #allAmount{
+        position:absolute;
+        top:45px;
+        padding-left: 5px;
+        width: 100%;
+        height:40px;
+    }
+
+    #LatestTxInfo{
+        position:absolute;
+        top:18%;
+        left:5px;
+        width:180px;
+        height:100px;
+        /*background:white;*/
+        border:3px solid #aaa;     
+    }
+    #txTitle{
+        position:absolute;
+        top:0px;
+        width: 100%;
+        height:20px;
+        overflow:hidden;
+        text-align:center;
+        font-weight:blod;
+        background:#aaa;
+    }
+    #detial{
+        position:absolute;
+        top:20px;
+        padding-left: 5px;
+        width: 100%;
+        height:80px;
+    }
+   /* #txDetial{
+        position:absolute;
+        top:0%;
+        width: 100%;
+        height:90%;
+    }*/
+    #bitDetial{
+        position:absolute;
+        top:0px;
+        width: 100%;
+        height:20px;
+    }
+    #timeDetial{
+        position:absolute;
+        top:25px;
+        width: 100%;
+        height:40px;
+    }
+    #timeLeftDiv{
+        position:absolute;
+        top:0px;
+        height:100%;
+    }
+    #timeRightDiv{
+        position:absolute;
+        top:0px;
+        left: 25px;
+        height:100%;
+    }
+    #addrDetial{
+        position:absolute;
+        top:65px;
+        width: 100%;
+        height:35px;
+    }
+
+    .buttonGroup{
+        position:absolute;
+        top:2%;
+        left:8%;
+        width: 100%;
+        height:10%;
+    }
+    
+    .classGroup{
+        width:200px;
+        height:130px;
+        border-bottom:1px solid #aaa;
+    }
+    #ex1{
+        position:absolute;
+        top:0%;
+        right:20%;
+        width: 100%;
+        overflow: hidden;
+    }
+    
+    /*#ipDetial{
+        position:absolute;
+        top:60%;
+        width: 100%;
+        height:75%;
+    }*/
+    
+    </style>
+</head>
+<body>
+
+    <div class="navbar navbar-default navbar-fixed-top">
+        <strong class="navbar-brand" id="title">Bitcoin Real-Time Transaction Visualization</strong>
+    </div>   
+
+    <div id="tip">
+    </div>
+
+    <div id="content">
+        <!-- <input id="ex1" data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-max="20" data-slider-step="1" data-slider-value="14"/> -->
+        <script type="text/javascript">
+
+        </script>
+        <!-- <div id="slider-range-min"></div> -->
+    </div>
+   <!--  <div id="shootGroup">
+            <table border="1" style="width:100%;height:100%;overflow-y:scroll;position:absolute;">
+            <tr>
+              <td>100</td>
+            </tr>
+            </table>
+    </div> -->
+    <!-- <div id="info_block">
+        <h1 class="tip">Transaction info</h1>
+        <div id="info">
+            Move over a circle to get more info.
+        </div>
+    </div> -->
+    <div id="timeBar">
+        <div class="buttonGroup">
+                <button type="button" class="btn btn-default" aria-label="Left Align" id="playButton">
+                    <span class="glyphicon glyphicon-pause" id="playSpan" aria-hidden="true"></span>
+                </button>
+                <!-- <button type="button" class="btn btn-default" aria-label="Left Align" id="forwardButton">
+                    <span class="glyphicon glyphicon-forward" aria-hidden="true"></span>
+                </button>
+
+                <button type="button" class="btn btn-default" aria-label="Left Align" id="backwardButton">
+                    <span class="glyphicon glyphicon-backward" aria-hidden="true"></span>
+                </button> -->
+        </div>
+    </div>
+
+    <div id="allInfo">
+        <div id="allTxTitle">
+            <p class="pTx">Statistics Info</p>
+        </div>
+        <div id="allID">
+            <span id="idSpan"><span>
+        </div>
+        <div id="allAmount">
+            <img src="image/bit.png" width="20" height="20">
+            <span id="amountSpan"><span>
+        </div>
+    </div>
+
+    <div id="LatestTxInfo">
+        <div id="txTitle">
+            <p class="pTx">Latest Transaction</p>
+        </div>
+        <div id="detial">
+       <!--  <div id="txDetial">
+            <img src="image/tx.png" width="20" height="20">
+        </div> -->
+        <div id="bitDetial">
+            <img src="image/bit.png" width="20" height="20">
+            <span id="bitSpan"><span>
+        </div>
+        <div id="timeDetial">
+            <div id="timeLeftDiv">
+                <img src="image/time.png" width="20" height="20">
+            </div>
+            <div id="timeRightDiv">
+                <span id="timeSpan"><span>
+            </div>
+                
+        </div>
+        <!-- <div id="ipDetial">
+            <img src="image/time.png" width="20" height="20">
+        </div> -->
+        <!-- <div id="addrDetial">
+            <img src="image/addr.png" width="20" height="20">
+            <span id="addrSpan"><span>
+        </div> -->
+    </div>
+
+    <script type="text/javascript" src="js/txDetail.js"></script>
+    <script type="text/javascript" src="js/timeLine.js"></script>
+    <!-- <script type="text/javascript" src="javascript/history_tx.js"></script> -->
+    <script type="text/javascript" src="js/real-time.js"></script>
+    <script type="text/javascript">
+        //self.drawFigure=new drawTimeBar()
+        
+        /*$('#ex1').slider({
+            formatter: function(value) {
+                return 'Current value: ' + value;
+            }
+        });*/
+        var main=new drawMainView()
+        //main.updataLimit(10)
+        //var main=new drawMainViewHistory(50)
+
+        $(function() {
+          var slider=  $( "#slider-range-min" ).slider({
+             range: "min",
+             value: 50,
+             min: 1,
+             max: 200,
+             start: function( event, ui ) {
+                //console.log(ui);
+                $(ui.handle).find('.ui-slider-tooltip').show();
+              },
+              stop: function( event, ui ) {
+                $(ui.handle).find('.ui-slider-tooltip').hide();
+              },
+              slide: function(event, ui) {
+                  $(ui.handle).find('.ui-slider-tooltip').text(ui.value);
+                  //console.log(ui.value)
+              },
+              create: function( event, ui ) {
+                var tooltip = $('<div class="ui-slider-tooltip" />');
+                $(event.target).find('.ui-slider-handle').append(tooltip);
+              },
+              change: function(event, ui) {}     
+           });
+          
+          //console.log($( "#slider-range-min" ).slider( "value" ))
+         }); 
+        
+    </script>
+
+</body>
+</html>
+
