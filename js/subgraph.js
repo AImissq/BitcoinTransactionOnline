@@ -2,7 +2,7 @@
  * @Author: wakouboy
  * @Date:   2017-06-13 20:33:17
  * @Last Modified by:   wakouboy
- * @Last Modified time: 2017-06-16 02:50:22
+ * @Last Modified time: 2017-06-16 03:03:09
  */
 
 'use strict';
@@ -25,16 +25,16 @@ var Subgraph = function(svg, index, graph, w, h, width, height, rowNum) {
     var points = []
     var end = calPosition(width, height, rowNum, index, w, h)
     if (delay != 0) {
-        if (delay - (-1 * end[0]) < width / 4) {
+        if (delay - (-1 * end[0]) < width / 3) {
             console.log('add speed', delay, -1 * end[0])
                 // $.Velocity.mock = 5
             if (addTag % 3 == 0) {
-                speed = speed * (1 + 2/addTag)
+                speed = speed * (1 + 3/addTag)
             }
 
             addTag += 1
             $('#canvas').velocity("stop").velocity({ translateX: delay + dist + 'px' }, dist / speed * 1000, 'linear')
-        } else if (end[0] < 0 && delay - (-1 * end[0]) > width * 3 / 4) {
+        } else if (end[0] < 0 && delay - (-1 * end[0]) > width * 1 / 2) {
             console.log('slow speed', delay, -1 * end[0])
                 // $.Velocity.mock = 5
             if (slowTag % 3 == 0) {
