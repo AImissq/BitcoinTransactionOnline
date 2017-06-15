@@ -2,7 +2,7 @@
  * @Author: wakouboy
  * @Date:   2017-06-13 20:33:17
  * @Last Modified by:   wakouboy
- * @Last Modified time: 2017-06-13 23:33:23
+ * @Last Modified time: 2017-06-16 02:50:22
  */
 
 'use strict';
@@ -11,52 +11,76 @@ var Subgraph = function(svg, index, graph, w, h, width, height, rowNum) {
 
     var transform_x = 100,
         transform_y = 100
-    console.log(graph)
-    var start = [- w * 2, height / 2 - h / 2]
+        // console.log(graph)
+        // console.log(d3.select)
+    var translateX = $('#canvas').css('transform')
+
+    var delay = 0
+    if (translateX != 'none') {
+        var currTrans = translateX.split(/[()]/)[1];
+        delay = +currTrans.split(',')[4];
+        console.log(delay)
+    }
+    var start = [-w * 2 - delay, height / 2 - h / 2]
     var points = []
     var end = calPosition(width, height, rowNum, index, w, h)
+    if (delay != 0) {
+        if (delay - (-1 * end[0]) < width / 4) {
+            console.log('add speed', delay, -1 * end[0])
+                // $.Velocity.mock = 5
+            if (addTag % 3 == 0) {
+                speed = speed * (1 + 2/addTag)
+            }
+
+            addTag += 1
+            $('#canvas').velocity("stop").velocity({ translateX: delay + dist + 'px' }, dist / speed * 1000, 'linear')
+        } else if (end[0] < 0 && delay - (-1 * end[0]) > width * 3 / 4) {
+            console.log('slow speed', delay, -1 * end[0])
+                // $.Velocity.mock = 5
+            if (slowTag % 3 == 0) {
+                speed = speed * (1 - 1/(Math.sqrt(slowTag)))
+            }
+            slowTag += 1
+            $('#canvas').velocity("stop").velocity({ translateX: delay + dist + 'px' }, dist / speed * 1000, 'linear')
+        }
+    }
     points.push(start)
-    points.push([ width / 3, height/2 - h/2])
+        // points.push([width / 3 - delay, height / 2 - h / 2])
     points.push(end)
 
     var path = svg.append("path")
         .data([points])
         .attr("d", d3.svg.line())
         .style('fill', 'none')
-        .style('stroke','none')
-        .attr('class','movepath')
+        .style('stroke', 'none')
+        .attr('class', 'movepath')
 
 
     var g = svg.append('g')
         .attr('transform', 'translate(' + points[0] + ')')
-        .attr('visibility','hidden')
+        .attr('visibility', 'visible')
+        .attr('id', 'g' + index)
 
-
-    var simulation = d3.forceSimulation()
-        .force("link", d3.forceLink().id(function(d) {
-            return d.id
-        }))
-        .force("charge", d3.forceManyBody())
-        .force("center", d3.forceCenter(w / 2, h / 2))
-
-    simulation
-        .nodes(graph.nodes)
-        .on("tick", function() {
-            if (simulation.alpha() < 0.5) {
-                drawLayout()
-                transition()
-            }
-        })
-
-    simulation.force("link")
-        .links(graph.links)
-
+    var work = new Worker("js/callayout.js");
+    //发送消息
+    work.postMessage({ graph, w, h });
+    // 监听消息
+    work.onmessage = function(event) {
+        graph = event.data
+            // console.log(graph)
+        var start = new Date()
+        drawLayout(graph)
+            // console.log('draw time', new Date - start)
+        start = new Date()
+        transition()
+            // console.log('tran time', new Date - start)
+    };
 
     function transition() {
 
         g.transition()
-            .duration(10000)
-            .attr('visibility','visible')
+            .duration(1000)
+            .attr('visibility', 'visible')
             .attrTween("transform", translateAlong(path.node()))
 
     }
@@ -83,13 +107,14 @@ var Subgraph = function(svg, index, graph, w, h, width, height, rowNum) {
             r = rowNum // 整除
         }
         var left = width - c * w
-        var top = (r-1) * h
-        // console.log(index, r, c, left, top)
+        var top = (r - 1) * h
+            // console.log(index, r, c, left, top)
         return [left, top]
 
     }
 
-    function drawLayout() {
+
+    function drawLayout(graph) {
 
         g.selectAll(".mainLine")
             .data(graph.links)

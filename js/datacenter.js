@@ -2,7 +2,7 @@
  * @Author: wakouboy
  * @Date:   2017-06-13 18:51:00
  * @Last Modified by:   wakouboy
- * @Last Modified time: 2017-06-13 23:42:37
+ * @Last Modified time: 2017-06-16 02:26:20
  */
 
 'use strict';
@@ -73,6 +73,9 @@ DataCenter.prototype.startSocket = function() {
     }
 
     function onMessage(evt) {
+        if (self.tx_num == 0) {
+            self.startTime = new Date()
+        }
         self.parseData(evt.data)
     }
 
@@ -149,12 +152,25 @@ DataCenter.prototype.parseData = function(message) {
     // } catch (e) {
     //     console.log("error")
     // }
-    DataCenter.sendMessage({ 'message': Config['newTrans'], 'data': data})
-    if(self.tx_num > 10) {
-        //GraphView.svgMove()
-        // self.websocket.close()
-    }
     
+    var t = dist / speed
+    DataCenter.sendMessage({ 'message': Config['newTrans'], 'data': data })
+    
+    if (self.tx_num > 20) {
+        if (flag == 0) {
+            console.log('canvas move')
+            $('#canvas').velocity({ translateX: dist + 'px' }, t * 1000, 'linear')
+        }
+        flag = 1
+            // GraphView.svgMove()
+            // self.websocket.close()
+    }
+
+
+    if (self.tx_num > 10000) {
+        self.websocket.close()
+    }
+
 
 }
 

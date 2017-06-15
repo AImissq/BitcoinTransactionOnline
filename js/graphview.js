@@ -2,7 +2,7 @@
  * @Author: wakouboy
  * @Date:   2017-06-13 19:15:36
  * @Last Modified by:   wakouboy
- * @Last Modified time: 2017-06-15 14:30:15
+ * @Last Modified time: 2017-06-15 23:21:57
  */
 
 'use strict';
@@ -18,6 +18,7 @@ var GraphView = function() {
     // self.sgWidth = 100
     // self.sgHeight = 100 // 子图的大小
     self.svg = d3.select('#content').append('svg').attr('width', self.width).attr('height', self.height).append('g')
+                 .attr('id','canvas')
     self.init()
 
 }
@@ -125,8 +126,8 @@ GraphView.prototype.parseData = function(data) { // 从单一的流数据中提�
 GraphView.prototype.svgMove = function() {
     var self = this
     self.svg.transition()
-            .duration(100000)
-            .attr('transform', 'translate(10000000,0)')
+            .duration(30000)
+            .attr('transform', 'translate(100000,0)')
 }
 GraphView.prototype.calSize = function(bitAmount) {
     return (2.5 - (1e+8) / ((1e+8) + bitAmount)) * 2

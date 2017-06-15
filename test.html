@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+
+    <script type="text/javascript">
+        //创建线程 work对象
+        var work = new Worker("work.js");
+        //发送消息
+        work.postMessage("100");
+        // 监听消息
+        work.onmessage = function(event) {
+            alert(event.data);
+        };
+    </script>
+</head>
+<body>
+
+</body>
+</html>
