@@ -2,7 +2,7 @@
  * @Author: wakouboy
  * @Date:   2017-06-13 18:51:00
  * @Last Modified by:   wakouboy
- * @Last Modified time: 2017-06-16 18:03:16
+ * @Last Modified time: 2017-06-16 18:05:35
  */
 
 'use strict';
@@ -158,11 +158,11 @@ DataCenter.prototype.parseData = function(message) {
     if (self.tx_num > 20) {
         if (flag == 0) {
             console.log('canvas move')
-                // $('#canvas').velocity({ translateX: dist + 'px' }, t * 1000, 'linear')
+                $('#canvas').velocity({ translateX: dist + 'px' }, t * 1000, 'linear')
         }
         flag = 1
             // GraphView.svgMove()
-        self.websocket.close()
+        // self.websocket.close()
     }
 
 
