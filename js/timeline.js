@@ -2,7 +2,7 @@
  * @Author: wakouboy
  * @Date:   2017-06-16 15:33:27
  * @Last Modified by:   wakouboy
- * @Last Modified time: 2017-06-16 17:09:37
+ * @Last Modified time: 2017-06-16 18:03:03
  */
 
 'use strict';
@@ -21,7 +21,7 @@ var Timeline = function() {
     self.slotNum = self.timeExpand / self.timeUnit
 
 }
-Timeline.prototype.init(startTime) {
+Timeline.prototype.init = function (startTime) {
 
     var self = this
     self.timeSlots = []
@@ -43,4 +43,4 @@ Timeline.prototype.init(startTime) {
 }
 
 
-window.TimelineView = new Timeline()
+// window.TimelineView = new Timeline()

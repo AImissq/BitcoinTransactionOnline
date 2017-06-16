@@ -2,7 +2,7 @@
  * @Author: wakouboy
  * @Date:   2017-06-13 18:51:00
  * @Last Modified by:   wakouboy
- * @Last Modified time: 2017-06-16 16:20:59
+ * @Last Modified time: 2017-06-16 18:03:16
  */
 
 'use strict';
@@ -75,7 +75,7 @@ DataCenter.prototype.startSocket = function() {
     function onMessage(evt) {
         if (self.tx_num == 0) {
             var time = parseInt(evt.data.time / 60) * 60            // 单位是秒
-            TimelineView.init(new Date(time * 1000))
+            // TimelineView.init(new Date(time * 1000))
             setInterval(self.showTime, 100)
         }
         self.parseData(evt.data)
