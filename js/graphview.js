@@ -2,7 +2,7 @@
  * @Author: wakouboy
  * @Date:   2017-06-13 19:15:36
  * @Last Modified by:   wakouboy
- * @Last Modified time: 2017-06-15 23:21:57
+ * @Last Modified time: 2017-06-16 14:03:53
  */
 
 'use strict';
@@ -18,7 +18,7 @@ var GraphView = function() {
     // self.sgWidth = 100
     // self.sgHeight = 100 // 子图的大小
     self.svg = d3.select('#content').append('svg').attr('width', self.width).attr('height', self.height).append('g')
-                 .attr('id','canvas')
+        .attr('id', 'canvas')
     self.init()
 
 }
@@ -57,6 +57,7 @@ GraphView.prototype.getMessage = function(message) {
     var self = this
     if (message['message'] == Config['newTrans']) {
         // console.log(message.data)
+        self.config = message.config
         self.parseData(message.data)
     }
 }
@@ -117,7 +118,8 @@ GraphView.prototype.parseData = function(data) { // 从单一的流数据中提�
         edgeNum += 1
     }
     var graph = { 'nodes': nodes, 'links': edges }
-    self.subgraphViews.push(new Subgraph(self.svg, self.subgraphData.length, graph, self.sgWidth, self.sgHeight, self.width, self.height, self.rowNum))
+    self.subgraphViews.push(new Subgraph(self.svg, self.subgraphData.length, graph, self.sgWidth, self.sgHeight, self.width, self.height,
+        self.rowNum, self.config))
     self.subgraphData.push(graph)
 
 
@@ -126,8 +128,8 @@ GraphView.prototype.parseData = function(data) { // 从单一的流数据中提�
 GraphView.prototype.svgMove = function() {
     var self = this
     self.svg.transition()
-            .duration(30000)
-            .attr('transform', 'translate(100000,0)')
+        .duration(30000)
+        .attr('transform', 'translate(100000,0)')
 }
 GraphView.prototype.calSize = function(bitAmount) {
     return (2.5 - (1e+8) / ((1e+8) + bitAmount)) * 2

@@ -2,7 +2,7 @@
  * @Author: wakouboy
  * @Date:   2017-06-13 18:51:00
  * @Last Modified by:   wakouboy
- * @Last Modified time: 2017-06-16 02:26:20
+ * @Last Modified time: 2017-06-16 16:20:59
  */
 
 'use strict';
@@ -74,7 +74,9 @@ DataCenter.prototype.startSocket = function() {
 
     function onMessage(evt) {
         if (self.tx_num == 0) {
-            self.startTime = new Date()
+            var time = parseInt(evt.data.time / 60) * 60            // 单位是秒
+            TimelineView.init(new Date(time * 1000))
+            setInterval(self.showTime, 100)
         }
         self.parseData(evt.data)
     }
@@ -119,21 +121,68 @@ DataCenter.prototype.parseData = function(message) {
     var myip = data.x.relayed_by
     var info = "Amount: " + (Math.round(amount * 1e8) / 1e8) + "BTC<br>Fee: " + fee + "BTC<br>Time: " + self.timeConverter(data.x.time) + "<br>Relayed by: " + myip + "<br><br>Click to view on blockchain.info";
     var detailInfo = "Amount: " + (Math.round(amount * 1e8) / 1e8) + "BTC<br>Fee: " + fee + "BTC<br>Time: " + self.timeConverter(data.x.time) + "<br>Relayed by: " + myip;
-    document.getElementById("bitSpan").innerHTML = Math.round(amount * 1e8) / 1e8;
     var time = self.timeConverter(data.x.time)
-    document.getElementById("timeSpan").innerHTML = time
 
-    if (self.tx_num == 0) {
-        self.startTime = data.x.time;
-    }
+    // if (self.tx_num == 0) {
+    //     self.startTime = data.x.time;
+    // }
     self.tx_num += 1
     self.total_amount += amount
 
-    var date = new Date((data.x.time - self.startTime) * 1000);
-    var hour = date.getHours();
-    var minute = date.getMinutes();
-    var sec = date.getSeconds();
 
+
+    // document.getElementById("idSpan").innerHTML = timeTip
+    // document.getElementById("timeSpan").innerHTML = time
+    // document.getElementById("bitSpan").innerHTML = Math.round(amount * 1e8) / 1e8;
+    // document.getElementById("idSpan").innerHTML = timeTip
+    // document.getElementById("amountSpan").innerHTML = parseInt(10000 * self.total_amount) / 10000;
+    // try {
+    //     DataCenter.sendMessage({ 'message': Config['newTrans'], 'data': data})
+    // } catch (e) {
+    //     console.log("error")
+    // }
+    data.amount = amount
+
+    var t = dist / speed
+    DataCenter.sendMessage({
+        'message': Config['newTrans'],
+        'data': data,
+        'config': {
+            'time': time,
+            'amount': amount,
+            'total_amount': self.total_amount
+        }
+    })
+
+    $('#g' + (self.tx_num - 100)).remove()
+    if (self.tx_num > 20) {
+        if (flag == 0) {
+            console.log('canvas move')
+                // $('#canvas').velocity({ translateX: dist + 'px' }, t * 1000, 'linear')
+        }
+        flag = 1
+            // GraphView.svgMove()
+        self.websocket.close()
+    }
+
+
+    if (self.tx_num > 10000) {
+        self.websocket.close()
+    }
+
+
+}
+
+DataCenter.prototype.showTime = function() {
+    var self = this
+    if (typeof startTime == "undefined") {
+        window.startTime = new Date()
+    }
+    var ms = (new Date() - startTime);
+    // console.log(ms)
+    var hour = Math.floor(ms / 1000 / 60 / 60)
+    var minute = Math.floor(ms / 1000 / 60)
+    var sec = Math.floor(ms / 1000) % 60
     if (hour >= 0 && hour <= 9) {
         hour = "0" + hour;
     }
@@ -143,35 +192,8 @@ DataCenter.prototype.parseData = function(message) {
     if (sec >= 0 && sec <= 9) {
         sec = "0" + sec;
     }
-    data.amount = amount
-
-    document.getElementById("idSpan").innerHTML = minute + ":" + sec
-    document.getElementById("amountSpan").innerHTML = parseInt(10000 * self.total_amount) / 10000;
-    // try {
-    //     DataCenter.sendMessage({ 'message': Config['newTrans'], 'data': data})
-    // } catch (e) {
-    //     console.log("error")
-    // }
-    
-    var t = dist / speed
-    DataCenter.sendMessage({ 'message': Config['newTrans'], 'data': data })
-    
-    if (self.tx_num > 20) {
-        if (flag == 0) {
-            console.log('canvas move')
-            $('#canvas').velocity({ translateX: dist + 'px' }, t * 1000, 'linear')
-        }
-        flag = 1
-            // GraphView.svgMove()
-            // self.websocket.close()
-    }
-
-
-    if (self.tx_num > 10000) {
-        self.websocket.close()
-    }
-
-
+    var timeTip = minute + ':' + sec
+    document.getElementById("idSpan").innerHTML = timeTip
 }
 
 DataCenter.prototype.timeConverter = function(UNIX_timestamp) {

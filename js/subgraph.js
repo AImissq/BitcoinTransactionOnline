@@ -2,12 +2,12 @@
  * @Author: wakouboy
  * @Date:   2017-06-13 20:33:17
  * @Last Modified by:   wakouboy
- * @Last Modified time: 2017-06-16 03:07:28
+ * @Last Modified time: 2017-06-16 15:36:42
  */
 
 'use strict';
 
-var Subgraph = function(svg, index, graph, w, h, width, height, rowNum) {
+var Subgraph = function(svg, index, graph, w, h, width, height, rowNum, config) {
 
     var transform_x = 100,
         transform_y = 100
@@ -19,47 +19,56 @@ var Subgraph = function(svg, index, graph, w, h, width, height, rowNum) {
     if (translateX != 'none') {
         var currTrans = translateX.split(/[()]/)[1];
         delay = +currTrans.split(',')[4];
-        console.log(delay)
+        // console.log(delay)
     }
     var start = [-w * 2 - delay, height / 2 - h / 2]
     var points = []
     var end = calPosition(width, height, rowNum, index, w, h)
     if (delay != 0) {
-        if (delay - (-1 * end[0]) < width / 3) {
-            console.log('add speed', delay, -1 * end[0])
-                // $.Velocity.mock = 5
+        if (delay - (-1 * end[0]) < width / 4) {
+            // console.log('add speed', delay, -1 * end[0])
+            // $.Velocity.mock = 5
             if (addTag % 3 == 0) {
-                speed = speed * (1 + 3/addTag)
+                speed = speed * Math.pow(addTag, 0.2)
             }
-
+            console.log('add speed', speed)
+            if(speed > 80) {
+                speed = 80
+            }
             addTag += 1
             slowTag = 1
             $('#canvas').velocity("stop").velocity({ translateX: delay + dist + 'px' }, dist / speed * 1000, 'linear')
         } else if (end[0] < 0 && delay - (-1 * end[0]) > width * 1 / 2) {
-            console.log('slow speed', delay, -1 * end[0])
-                // $.Velocity.mock = 5
+
+            // $.Velocity.mock = 5
             if (slowTag % 3 == 0) {
-                speed = speed * (1 - 1/(Math.sqrt(slowTag)))
+                speed = speed * Math.pow(slowTag, -0.3)
             }
+
+            if(speed < 15) {
+                speed = 15
+            }
+
+            console.log('slow speed', speed)
             addTag = 1
             slowTag += 1
             $('#canvas').velocity("stop").velocity({ translateX: delay + dist + 'px' }, dist / speed * 1000, 'linear')
         }
     }
-    points.push(start)
-        // points.push([width / 3 - delay, height / 2 - h / 2])
-    points.push(end)
+    // points.push(start)
+    // points.push([width / 3 - delay, height / 2 - h / 2])
+    // points.push(end)
 
-    var path = svg.append("path")
-        .data([points])
-        .attr("d", d3.svg.line())
-        .style('fill', 'none')
-        .style('stroke', 'none')
-        .attr('class', 'movepath')
-
-
+    // var path = svg.append("path")
+    //     .data([points])
+    //     .attr("d", d3.svg.line())
+    //     .style('fill', 'none')
+    //     .style('stroke', 'none')
+    //     .attr('class', 'movepath')
+    //     .attr('id','path' + index)
+    // console.log('start', start)
     var g = svg.append('g')
-        .attr('transform', 'translate(' + points[0] + ')')
+        .attr('transform', 'translate(' + start + ')')
         .attr('visibility', 'visible')
         .attr('id', 'g' + index)
 
@@ -72,9 +81,15 @@ var Subgraph = function(svg, index, graph, w, h, width, height, rowNum) {
             // console.log(graph)
         var start = new Date()
         drawLayout(graph)
+
+        g.transition().duration(3000).attr('visibility', 'visible').attr('transform', 'translate(' + end + ')')
+            .on('end', function() {
+                showTagInfo(config)
+            })
             // console.log('draw time', new Date - start)
-        start = new Date()
-        transition()
+            // start = new Date()
+            // $('#g' + index).velocity({ p: { translateX: end[0] + 'px', translateY: end[1] + 'px' }, o: { duration: 1000 } })
+            // transition()
             // console.log('tran time', new Date - start)
     };
 
@@ -86,7 +101,6 @@ var Subgraph = function(svg, index, graph, w, h, width, height, rowNum) {
             .attrTween("transform", translateAlong(path.node()))
 
     }
-
     // Returns an attrTween for translating along the specified path element.
     function translateAlong(path) {
         var l = path.getTotalLength();
@@ -96,6 +110,15 @@ var Subgraph = function(svg, index, graph, w, h, width, height, rowNum) {
                 return "translate(" + p.x + "," + p.y + ")";
             }
         }
+    }
+
+    function showTagInfo(config) {
+        var time = config.time,
+            amount = config.amount,
+            total_amount = config.total_amount
+        document.getElementById("timeSpan").innerHTML = time
+        document.getElementById("bitSpan").innerHTML = Math.round(amount * 1e8) / 1e8;
+        document.getElementById("amountSpan").innerHTML = parseInt(10000 * total_amount) / 10000;
     }
 
     function calPosition(width, height, rowNum, index, w, h) {
@@ -114,7 +137,6 @@ var Subgraph = function(svg, index, graph, w, h, width, height, rowNum) {
         return [left, top]
 
     }
-
 
     function drawLayout(graph) {
 
@@ -137,12 +159,21 @@ var Subgraph = function(svg, index, graph, w, h, width, height, rowNum) {
             })
             .style("opacity", 0.5)
             .style("stroke", "grey")
-            .style("stroke-width", 1);
+            .style("stroke-width", 1)
 
-        g.selectAll(".mainCircle")
+        var ng = g.selectAll(".mainCircle")
             .data(graph.nodes)
             .enter()
-            .append("circle")
+            .append('g')
+
+        ng.append('title')
+            .text(function(d) {
+                return Math.floor(10000 * d.value * 1e-8) / 10000
+            })
+
+
+
+        ng.append("circle")
             .attr("class", "mainCircle")
             .attr("r", function(d, i) {
                 return d.size
@@ -174,9 +205,10 @@ var Subgraph = function(svg, index, graph, w, h, width, height, rowNum) {
                             return 0.8;
                         }
                     })
-                document.getElementById("shootGroup").innerHTML += "<div class=classGroup id=shootGroup" + d.tx_id + ">ID:" + d.tx_id + "</div>"
-                var small = new drawTx(alltx[d.tx_id], "shootGroup" + d.tx_id)
+                    // document.getElementById("shootGroup").innerHTML += "<div class=classGroup id=shootGroup" + d.tx_id + ">ID:" + d.tx_id + "</div>"
+                    // var small = new drawTx(alltx[d.tx_id], "shootGroup" + d.tx_id)
             })
+
 
     }
 }
