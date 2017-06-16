@@ -2,7 +2,7 @@
  * @Author: wakouboy
  * @Date:   2017-06-13 20:33:17
  * @Last Modified by:   wakouboy
- * @Last Modified time: 2017-06-16 03:03:09
+ * @Last Modified time: 2017-06-16 03:07:28
  */
 
 'use strict';
@@ -33,6 +33,7 @@ var Subgraph = function(svg, index, graph, w, h, width, height, rowNum) {
             }
 
             addTag += 1
+            slowTag = 1
             $('#canvas').velocity("stop").velocity({ translateX: delay + dist + 'px' }, dist / speed * 1000, 'linear')
         } else if (end[0] < 0 && delay - (-1 * end[0]) > width * 1 / 2) {
             console.log('slow speed', delay, -1 * end[0])
@@ -40,6 +41,7 @@ var Subgraph = function(svg, index, graph, w, h, width, height, rowNum) {
             if (slowTag % 3 == 0) {
                 speed = speed * (1 - 1/(Math.sqrt(slowTag)))
             }
+            addTag = 1
             slowTag += 1
             $('#canvas').velocity("stop").velocity({ translateX: delay + dist + 'px' }, dist / speed * 1000, 'linear')
         }
