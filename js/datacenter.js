@@ -2,7 +2,7 @@
  * @Author: wakouboy
  * @Date:   2017-06-13 18:51:00
  * @Last Modified by:   wakouboy
- * @Last Modified time: 2017-06-16 18:05:35
+ * @Last Modified time: 2017-06-17 22:41:00
  */
 
 'use strict';
@@ -16,6 +16,18 @@ var DataCenter = function() {
 DataCenter.prototype.init = function() {
     var self = this
     self.wsUri = "ws://ws.blockchain.info/inv"
+
+    d3.select('#playButton').on('click', function(d) {
+        var state = $("#playSpan").attr("class");
+        if (state == "glyphicon glyphicon-pause") {
+            self.websocket.close();
+            //console.log("dqwdq")
+            $("#playSpan").attr("class", "glyphicon glyphicon-play");
+        } else {
+            self.startSocket();
+            $("#playSpan").attr("class", "glyphicon glyphicon-pause");
+        }
+    });
     self.config()
     self.startSocket()
 }
@@ -73,12 +85,14 @@ DataCenter.prototype.startSocket = function() {
     }
 
     function onMessage(evt) {
+        var data = JSON.parse(evt.data)
         if (self.tx_num == 0) {
-            var time = parseInt(evt.data.time / 60) * 60            // 单位是秒
-            // TimelineView.init(new Date(time * 1000))
+            // var time = parseInt(data.x.time / 60) * 60 // 单位是秒
+            TimelineView.init(new Date(data.x.time * 1000))
             setInterval(self.showTime, 100)
         }
-        self.parseData(evt.data)
+        self.parseData(data)
+        TimelineView.update(new Date(data.x.time * 1000))
     }
 
     function onError(evt) {
@@ -103,7 +117,7 @@ DataCenter.prototype.startSocket = function() {
 
 DataCenter.prototype.parseData = function(message) {
     var self = this
-    var data = JSON.parse(message);
+    var data = message;
     var hash = data.x.hash;
     var amount = 0;
     var amount_data = data.x.out;
@@ -158,15 +172,15 @@ DataCenter.prototype.parseData = function(message) {
     if (self.tx_num > 20) {
         if (flag == 0) {
             console.log('canvas move')
-                $('#canvas').velocity({ translateX: dist + 'px' }, t * 1000, 'linear')
+            $('#canvas').velocity({ translateX: dist + 'px' }, t * 1000, 'linear')
         }
         flag = 1
             // GraphView.svgMove()
-        // self.websocket.close()
+            // self.websocket.close()
     }
 
 
-    if (self.tx_num > 10000) {
+    if (self.tx_num > 20000) {
         self.websocket.close()
     }
 

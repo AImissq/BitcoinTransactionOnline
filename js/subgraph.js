@@ -2,7 +2,7 @@
  * @Author: wakouboy
  * @Date:   2017-06-13 20:33:17
  * @Last Modified by:   wakouboy
- * @Last Modified time: 2017-06-16 15:36:42
+ * @Last Modified time: 2017-06-17 20:32:55
  */
 
 'use strict';
@@ -188,9 +188,9 @@ var Subgraph = function(svg, index, graph, w, h, width, height, rowNum, config) 
                 if (d.state == "tx") {
                     return "#aaaaaa";
                 } else if (d.state == "input_addr") {
-                    return "#fda26b";
+                    return "#fda26b"; // 输入
                 } else {
-                    return "#b3d465";
+                    return "#b3d465"; //输出
                 }
             })
             .style("opacity", 0.8)

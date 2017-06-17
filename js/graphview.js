@@ -2,7 +2,7 @@
  * @Author: wakouboy
  * @Date:   2017-06-13 19:15:36
  * @Last Modified by:   wakouboy
- * @Last Modified time: 2017-06-16 14:03:53
+ * @Last Modified time: 2017-06-17 20:36:56
  */
 
 'use strict';
@@ -71,7 +71,7 @@ GraphView.prototype.parseData = function(data) { // 从单一的流数据中提�
     var amount = data.amount
     var nodeNum = 0
     var sNum = self.subgraphData.length // 子图数量
-    if (data.x.inputs.length > 1) {
+    if (data.x.inputs.length > 1 && data.x.out.length > 1) {
         nodes.push({
             hash: hash,
             relayed_by: data.x.relayed_by,
@@ -84,6 +84,18 @@ GraphView.prototype.parseData = function(data) { // 从单一的流数据中提�
         });
         nodeNum += 1
 
+    } else {
+        if (data.x.out.length == 1) {
+            nodes.push({
+                addr: data.x.out[0].addr,
+                value: data.x.out[0].value,
+                name: 'nodes' + nodeNum + 's' + sNum,
+                size: self.calSize(data.x.out[0].value),
+                id: nodeNum,
+                state: "output_addr"
+            })
+            nodeNum += 1
+        }
     }
     for (var i = 0; i < data.x.inputs.length; i++) {
         nodes.push({
@@ -96,17 +108,18 @@ GraphView.prototype.parseData = function(data) { // 从单一的流数据中提�
         });
         nodeNum += 1
     }
-
-    for (var i = 0; i < data.x.out.length; i++) {
-        nodes.push({
-            addr: data.x.out[i].addr,
-            value: data.x.out[i].value,
-            name: 'nodes' + nodeNum + 's' + sNum,
-            size: self.calSize(data.x.out[i].value),
-            id: nodeNum,
-            state: "output_addr"
-        });
-        nodeNum += 1
+    if (data.x.out.length > 1) {
+        for (var i = 0; i < data.x.out.length; i++) {
+            nodes.push({
+                addr: data.x.out[i].addr,
+                value: data.x.out[i].value,
+                name: 'nodes' + nodeNum + 's' + sNum,
+                size: self.calSize(data.x.out[i].value),
+                id: nodeNum,
+                state: "output_addr"
+            });
+            nodeNum += 1
+        }
     }
     var edgeNum = 0
     for (var i = 1; i < nodeNum; i++) {
