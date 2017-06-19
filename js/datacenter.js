@@ -2,7 +2,7 @@
  * @Author: wakouboy
  * @Date:   2017-06-13 18:51:00
  * @Last Modified by:   wakouboy
- * @Last Modified time: 2017-06-17 22:41:00
+ * @Last Modified time: 2017-06-19 09:21:45
  */
 
 'use strict';
@@ -11,6 +11,7 @@ var DataCenter = function() {
     self.alltx = []
     self.tx_num = 0 //统计从开始时间累积的交易次数
     self.total_amount = 0 //统计从开始时间累积的交易额
+    self.pretxTime = 0
 }
 
 DataCenter.prototype.init = function() {
@@ -88,9 +89,15 @@ DataCenter.prototype.startSocket = function() {
         var data = JSON.parse(evt.data)
         if (self.tx_num == 0) {
             // var time = parseInt(data.x.time / 60) * 60 // 单位是秒
-            TimelineView.init(new Date(data.x.time * 1000))
+            var startDate = new Date(data.x.time * 1000)
+            self.startTime = startDate.getTime() // 数据里的时间是北京时间？
+            TimelineView.init(startDate)
             setInterval(self.showTime, 100)
         }
+
+        // console.log('datacenter', data.x.time * 1000)
+        // console.log( data.x.time - self.pretxTime)
+        // self.pretxTime = data.x.time
         self.parseData(data)
         TimelineView.update(new Date(data.x.time * 1000))
     }
@@ -169,10 +176,13 @@ DataCenter.prototype.parseData = function(message) {
     })
 
     $('#g' + (self.tx_num - 100)).remove()
-    if (self.tx_num > 20) {
+    if (self.tx_num > 1) {
         if (flag == 0) {
             console.log('canvas move')
+            speed = GraphView.sgWidth
+            var t = dist / speed
             $('#canvas').velocity({ translateX: dist + 'px' }, t * 1000, 'linear')
+                // GraphView.svgMove()
         }
         flag = 1
             // GraphView.svgMove()
@@ -180,10 +190,9 @@ DataCenter.prototype.parseData = function(message) {
     }
 
 
-    if (self.tx_num > 20000) {
+    if (self.tx_num > 50000) {
         self.websocket.close()
     }
-
 
 }
 

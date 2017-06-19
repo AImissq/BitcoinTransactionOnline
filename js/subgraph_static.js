@@ -2,65 +2,29 @@
  * @Author: wakouboy
  * @Date:   2017-06-13 20:33:17
  * @Last Modified by:   wakouboy
- * @Last Modified time: 2017-06-18 16:54:29
+ * @Last Modified time: 2017-06-19 09:22:01
  */
 
 'use strict';
 
-var Subgraph = function(svg, index, graph, w, h, width, height, rowNum, config) {
+var Subgraph = function(svg, index, graph, w, h, width, height, rowNum, config, end, ctText) {
 
     var transform_x = 100,
         transform_y = 100
         // console.log(graph)
         // console.log(d3.select)
-    index += 60 // 从靠近头部处开始移动
-   
+    index += 70 // 从靠近头部处开始移动
+
+    var translateX = $('#canvas').css('transform')
+    var delay = 0
+    if (translateX != 'none') {
+        var currTrans = translateX.split(/[()]/)[1];
+        delay = +currTrans.split(',')[4];
+    }
+
     var start = [-w * 2 - delay, height / 2 - h / 2]
     var points = []
-    var end = calPosition(width, height, rowNum, index, w, h)
-    if (delay != 0) {
-        if (delay - (-1 * end[0]) < width / 4) {
-            // console.log('add speed', delay, -1 * end[0])
-            // $.Velocity.mock = 5
-            if (addTag % 3 == 0) {
-                speed = speed * Math.pow(addTag, 0.2)
-            }
-            console.log('add speed', speed)
-            if(speed > 80) {
-                speed = 80
-            }
-            addTag += 1
-            slowTag = 1
-            $('#canvas').velocity("stop").velocity({ translateX: delay + dist + 'px' }, dist / speed * 1000, 'linear')
-        } else if (end[0] < 0 && delay - (-1 * end[0]) > width * 1 / 2) {
 
-            // $.Velocity.mock = 5
-            if (slowTag % 3 == 0) {
-                speed = speed * Math.pow(slowTag, -0.3)
-            }
-
-            if(speed < 15) {
-                speed = 15
-            }
-
-            console.log('slow speed', speed)
-            addTag = 1
-            slowTag += 1
-            $('#canvas').velocity("stop").velocity({ translateX: delay + dist + 'px' }, dist / speed * 1000, 'linear')
-        }
-    }
-    // points.push(start)
-    // points.push([width / 3 - delay, height / 2 - h / 2])
-    // points.push(end)
-
-    // var path = svg.append("path")
-    //     .data([points])
-    //     .attr("d", d3.svg.line())
-    //     .style('fill', 'none')
-    //     .style('stroke', 'none')
-    //     .attr('class', 'movepath')
-    //     .attr('id','path' + index)
-    // console.log('start', start)
     var g = svg.append('g')
         .attr('transform', 'translate(' + start + ')')
         .attr('visibility', 'visible')
@@ -76,15 +40,20 @@ var Subgraph = function(svg, index, graph, w, h, width, height, rowNum, config) 
         var start = new Date()
         drawLayout(graph)
 
-        g.transition().duration(3000).attr('visibility', 'visible').attr('transform', 'translate(' + end + ')')
+        g.transition().duration(3000).attr('visibility', 'visible').attr('transform', 'translate(' + end[0] + ',' + (end[1] + 10) + ')')
             .on('end', function() {
                 showTagInfo(config)
+                if (end[1] == 0) {
+                    svg.append('text')
+                        .attr('x', end[0] + 15)
+                        .attr('y', end[1] + 20)
+                        .text(ctText)
+                }
+
             })
-            // console.log('draw time', new Date - start)
-            // start = new Date()
-            // $('#g' + index).velocity({ p: { translateX: end[0] + 'px', translateY: end[1] + 'px' }, o: { duration: 1000 } })
-            // transition()
-            // console.log('tran time', new Date - start)
+
+
+
     };
 
     function transition() {
@@ -115,22 +84,7 @@ var Subgraph = function(svg, index, graph, w, h, width, height, rowNum, config) 
         document.getElementById("amountSpan").innerHTML = parseInt(10000 * total_amount) / 10000;
     }
 
-    function calPosition(width, height, rowNum, index, w, h) {
-        index += 1
-        var r = index % rowNum
-        var c = Math.floor(index / rowNum)
 
-
-        if (c * rowNum != index) c += 1
-        else {
-            r = rowNum // 整除
-        }
-        var left = width - c * w
-        var top = (r - 1) * h
-            // console.log(index, r, c, left, top)
-        return [left, top]
-
-    }
 
     function drawLayout(graph) {
 

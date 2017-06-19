@@ -2,7 +2,7 @@
  * @Author: wakouboy
  * @Date:   2017-06-16 15:33:27
  * @Last Modified by:   wakouboy
- * @Last Modified time: 2017-06-17 23:14:32
+ * @Last Modified time: 2017-06-19 09:12:32
  */
 
 'use strict';
@@ -15,7 +15,7 @@ var Timeline = function() {
     self.height = $('#' + self.divId).height()
     self.svg = d3.select('#' + self.divId).append('svg').attr('width', self.width).attr('height', self.height).attr('id', 'tsvg')
     self.padding = { left: 30, right: 30, top: 20, bottom: 25 }
-    self.maxNum = 60
+    self.maxNum = 100
     self.timeUnit = 5000 // 时间粒度
     self.timeExpand = 10 * 60 * 1000 // 时间跨度
     self.slotNum = self.timeExpand / self.timeUnit
@@ -53,7 +53,7 @@ Timeline.prototype.init = function(startTime) {
 
 
     self.xScale.domain([new Date(self.timeSlots[0].getTime() - self.timeUnit), self.timeSlots[self.slotsLen - 1]])
-    self.yScale.domain([0, 60])
+    self.yScale.domain([0, self.maxNum])
 
 
     var svg = self.svg

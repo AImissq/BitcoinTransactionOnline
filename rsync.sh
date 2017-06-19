@@ -1,0 +1,1 @@
+rsync -avz --exclude '.git' * shuai.chen@192.168.10.9:/var/www/html/bitcoin/realtime
