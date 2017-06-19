@@ -2,7 +2,7 @@
  * @Author: wakouboy
  * @Date:   2017-06-16 15:33:27
  * @Last Modified by:   wakouboy
- * @Last Modified time: 2017-06-19 09:12:32
+ * @Last Modified time: 2017-06-19 22:43:50
  */
 
 'use strict';
@@ -73,6 +73,9 @@ Timeline.prototype.init = function(startTime) {
         .attr("class", "y axis")
         .attr("transform", "translate(" + self.padding.left + "," + self.padding.top + ")")
         .call(d3.axisLeft(self.yScale).ticks(5))
+        .append("text")
+        .text("Num")
+        .attr('transform', 'translate(' + 30 + ', 0)');
 
     for (var i = 0; i < self.slotsLen; i++) {
         svg.append('rect')
@@ -146,4 +149,4 @@ Timeline.prototype.update = function(date) {
 
 
 
-window.TimelineView = new Timeline()
+

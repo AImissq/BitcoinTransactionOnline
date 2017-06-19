@@ -2,7 +2,7 @@
  * @Author: wakouboy
  * @Date:   2017-06-13 19:15:36
  * @Last Modified by:   wakouboy
- * @Last Modified time: 2017-06-19 09:19:55
+ * @Last Modified time: 2017-06-19 22:13:18
  */
 
 'use strict';
@@ -13,7 +13,7 @@ var GraphView = function() {
     self.subgraphViews = []
     self.width = $('#content').width()
     self.height = $('#content').height()
-    self.rowNum = 6
+    self.rowNum = 8
     self.timeInterval = 1 // 单个列的时间跨度 s
     self.currentColumnTime = 0
     self.currentColumn = 0
@@ -22,7 +22,10 @@ var GraphView = function() {
         // self.sgWidth = 100
         // self.sgHeight = 100 // 子图的大小
     self.svg = d3.select('#content').append('svg').attr('width', self.width).attr('height', self.height).append('g')
-        .attr('id', 'canvas') // attr('transform', 'translate(0, 20)')
+        .attr('id', 'canvas') //.attr('transform', 'translate(0, ' + TextHeight + ')')
+    self.paddingTop = TextHeight
+
+    self.startPosition = self.width / 3
     self.init()
 
 }
@@ -30,7 +33,7 @@ GraphView.prototype.init = function() {
     var self = this
         // var rowNum = self.rowNum = Math.floor(self.height / self.sgHeight)
     var rowNum = self.rowNum
-    self.sgHeight = self.height / rowNum
+    self.sgHeight = (self.height - self.paddingTop) / rowNum
     self.sgWidth = self.sgHeight
 
     // var colNum = self.colNum = Math.floor(self.width / self.sgWidth) //
@@ -136,6 +139,8 @@ GraphView.prototype.parseData = function(data) { // 从单一的流数据中提�
     if (sLen == 0) {
         self.currentColumnTime = new Date(parseInt(txTime.getTime() / 1000) * 1000)
         self.colNumArray[0] = 0
+        self.svg.append('g').attr('class', 'columng').attr('id', 'column' + self.currentColumn)
+            .attr('transform', 'translate(' + (self.startPosition - self.currentColumn * self.sgWidth) + ',0)')
     } else {
         if (txTime.getSeconds() == self.currentColumnTime.getSeconds()) {
             self.currentRow += 1
@@ -147,6 +152,8 @@ GraphView.prototype.parseData = function(data) { // 从单一的流数据中提�
             if (self.colNumArray[self.currentColumn] == undefined) {
                 self.colNumArray[self.currentColumn] = 0
                 self.currentRow = 0
+                self.svg.append('g').attr('class', 'columng').attr('id', 'column' + self.currentColumn)
+                    .attr('transform', 'translate(' + (self.startPosition - self.currentColumn * self.sgWidth) + ',0)')
             } else {
                 self.currentRow = self.colNumArray[self.currentColumn] + 1
                 self.colNumArray[self.currentColumn] = self.currentRow
@@ -156,7 +163,8 @@ GraphView.prototype.parseData = function(data) { // 从单一的流数据中提�
         }
 
     }
-    var position = [self.width - (self.currentColumn + 1) * self.sgWidth - self.width / 2, self.currentRow * self.sgHeight]
+
+    var position = [self.startPosition - self.currentColumn * self.sgWidth, self.currentRow * self.sgHeight + self.paddingTop]
         // if (self.currentRow == 0) {
         //     self.svg.append('text')
         //         .attr('x', position[0])
@@ -165,22 +173,11 @@ GraphView.prototype.parseData = function(data) { // 从单一的流数据中提�
         //             return timeConvert(self.currentColumnTime)
         //         })
         // }
-    var currentColumnTimeText = timeConvert(self.currentColumnTime)
         // console.log('size', nodeNum, txTime.getTime())
 
     self.subgraphViews.push(new Subgraph(self.svg, self.subgraphData.length, graph, self.sgWidth, self.sgHeight, self.width, self.height,
-        self.rowNum, self.config, position, currentColumnTimeText))
+        self.rowNum, self.config, position, self.currentColumnTime, self.currentColumn, self.currentRow))
     self.subgraphData.push(graph)
-
-    function timeConvert(date) {
-        var h = date.getHours()
-        if (h < 10) h = '0' + h
-        var m = date.getMinutes()
-        if (m < 10) m = '0' + m
-        var s = date.getSeconds()
-        if (s < 10) s = '0' + s
-        return h + ':' + m + ':' + s
-    }
 
 }
 GraphView.prototype.svgMove = function() {
@@ -196,7 +193,3 @@ GraphView.prototype.svgMove = function() {
 GraphView.prototype.calSize = function(bitAmount) {
     return (2.5 - (1e+8) / ((1e+8) + bitAmount)) * 2
 }
-
-
-
-window.GraphView = new GraphView()

@@ -2,7 +2,7 @@
  * @Author: wakouboy
  * @Date:   2017-06-13 18:51:00
  * @Last Modified by:   wakouboy
- * @Last Modified time: 2017-06-19 09:21:45
+ * @Last Modified time: 2017-06-19 22:34:44
  */
 
 'use strict';
@@ -12,6 +12,8 @@ var DataCenter = function() {
     self.tx_num = 0 //统计从开始时间累积的交易次数
     self.total_amount = 0 //统计从开始时间累积的交易额
     self.pretxTime = 0
+    self.columnScale = {}
+    self.init()
 }
 
 DataCenter.prototype.init = function() {
@@ -25,6 +27,7 @@ DataCenter.prototype.init = function() {
             //console.log("dqwdq")
             $("#playSpan").attr("class", "glyphicon glyphicon-play");
         } else {
+            preTime = 0
             self.startSocket();
             $("#playSpan").attr("class", "glyphicon glyphicon-pause");
         }
@@ -175,8 +178,8 @@ DataCenter.prototype.parseData = function(message) {
         }
     })
 
-    $('#g' + (self.tx_num - 100)).remove()
-    if (self.tx_num > 1) {
+    $('#g' + (self.tx_num - 200)).remove()
+    if (self.tx_num > 10) {
         if (flag == 0) {
             console.log('canvas move')
             speed = GraphView.sgWidth
@@ -252,4 +255,4 @@ DataCenter.prototype.timeConverter = function(UNIX_timestamp) {
     return currentdate;
 }
 
-window.DataCenter = new DataCenter()
+
