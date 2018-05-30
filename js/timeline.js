@@ -2,7 +2,7 @@
  * @Author: wakouboy
  * @Date:   2017-06-16 15:33:27
  * @Last Modified by:   wakouboy
- * @Last Modified time: 2017-06-19 22:43:50
+ * @Last Modified time: 2018-05-30 17:31:49
  */
 
 'use strict';
@@ -41,7 +41,7 @@ Timeline.prototype.init = function(startTime) {
     // }
 
     for (var i = 0; i < self.slotNum; i++) {
-        self.timeSlots.push(new Date(startT + i * self.timeUnit))
+        self.timeSlots.push(new Date(startT - i * self.timeUnit))
         self.numArr.push(0)
     }
     self.numArr[0] = 0

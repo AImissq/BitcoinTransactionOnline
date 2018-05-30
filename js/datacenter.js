@@ -2,7 +2,7 @@
  * @Author: wakouboy
  * @Date:   2017-06-13 18:51:00
  * @Last Modified by:   wakouboy
- * @Last Modified time: 2017-06-19 22:34:44
+ * @Last Modified time: 2018-05-30 17:27:29
  */
 
 'use strict';
@@ -179,12 +179,12 @@ DataCenter.prototype.parseData = function(message) {
     })
 
     $('#g' + (self.tx_num - 200)).remove()
-    if (self.tx_num > 10) {
+    if (self.tx_num > 0) {
         if (flag == 0) {
             console.log('canvas move')
             speed = GraphView.sgWidth
             var t = dist / speed
-            $('#canvas').velocity({ translateX: dist + 'px' }, t * 1000, 'linear')
+            $('#canvas').velocity({ translateX: -1 * dist + 'px' }, t * 1000, 'linear')
                 // GraphView.svgMove()
         }
         flag = 1
@@ -193,7 +193,7 @@ DataCenter.prototype.parseData = function(message) {
     }
 
 
-    if (self.tx_num > 50000) {
+    if (self.tx_num > 5000) {
         self.websocket.close()
     }
 

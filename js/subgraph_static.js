@@ -2,8 +2,9 @@
  * @Author: wakouboy
  * @Date:   2017-06-13 20:33:17
  * @Last Modified by:   wakouboy
- * @Last Modified time: 2017-06-19 22:33:05
+ * @Last Modified time: 2018-05-30 11:26:48
  */
+
 
 'use strict';
 
@@ -22,7 +23,8 @@ var Subgraph = function(svg, index, graph, w, h, width, height, rowNum, config, 
         delay = +currTrans.split(',')[4];
     }
 
-    var start = [-w * 2 - delay, height / 2 - h / 2]
+    // var start = [-w * 2 - delay, height / 2]
+    var start = [end[0] + w * 4, height / 2]
     var points = []
 
     var g = svg.append('g')
@@ -45,7 +47,7 @@ var Subgraph = function(svg, index, graph, w, h, width, height, rowNum, config, 
         g.transition().duration(3000).attr('visibility', 'visible').attr('transform', 'translate(' + end[0] + ',' + (end[1]) + ')')
             .on('end', function() {
 
-                if (end[1] == TextHeight) {
+                if (end[1] == height / 2 - h / 2 + TextHeight) {
 
                     var ctText = timeConvert(currentColumnTime)
 
@@ -72,7 +74,7 @@ var Subgraph = function(svg, index, graph, w, h, width, height, rowNum, config, 
                         .attr('id', ctText)
                     preTime = currentColumnTime
                     columnTimeIndex[ctText] = true
-                    // console.log('time', ctText)
+                        // console.log('time', ctText)
                 }
                 showTagInfo(config)
                 var gtr = d3.select(this).attr('transform')
@@ -97,9 +99,9 @@ var Subgraph = function(svg, index, graph, w, h, width, height, rowNum, config, 
                     var value = {}
                     if (columnGTransform[currentColumn] == undefined) {
                         var box = d3.select('#column' + currentColumn).node().getBBox() // 不随scale改变
-                        //var boundBox = d3.select('#column' + currentColumn).node().getBoundingClientRect() // 视图离左边的位置, 随着scale改变
+                            //var boundBox = d3.select('#column' + currentColumn).node().getBoundingClientRect() // 视图离左边的位置, 随着scale改变
                         value['boxX'] = +box.x // 父亲元素的位置
-                        // value['left'] = +boundBox.left
+                            // value['left'] = +boundBox.left
                         value['width'] = +box.width
 
                         // g 的放大缩小是子元素相对于父亲元素的坐标下缩小
@@ -109,10 +111,10 @@ var Subgraph = function(svg, index, graph, w, h, width, height, rowNum, config, 
                     }
 
                     var leftD = value['left'] - value['boxX'] + value['boxX'] * scale
-                    var move = end[0] + w / 2 - (value['boxX'] + value['width'] / 2) * scale 
-                    // 中心点位置 减去 缩小的边界距离 剩下就是gde 边界移动的距离
+                    var move = end[0] + w / 2 - (value['boxX'] + value['width'] / 2) * scale
+                        // 中心点位置 减去 缩小的边界距离 剩下就是gde 边界移动的距离
 
-                    d3.select('#column' + currentColumn).transition().duration(1000).attr("transform", "translate(" + move + " " + 0 + ") scale(" + scale + ")");
+                    d3.select('#column' + currentColumn).transition().duration(1000).attr("transform", "translate(" + move + " " + TextHeight + ") scale(" + scale + ")");
                     // var gw
                     // if (columnGSizeIndex[currentColumn] == undefined) {
                     //     gw = d3.select('#column' + currentColumn).node().getBBox().width
@@ -224,11 +226,11 @@ var Subgraph = function(svg, index, graph, w, h, width, height, rowNum, config, 
             })
             .style("fill", function(d, i) {
                 if (d.state == "tx") {
-                    return "#aaaaaa";
+                    return tx_color;
                 } else if (d.state == "input_addr") {
-                    return "#fda26b"; // 输入
+                    return input_color; // 输入
                 } else {
-                    return "#b3d465"; //输出
+                    return output_color; //输出
                 }
             })
             .style("opacity", 0.8)

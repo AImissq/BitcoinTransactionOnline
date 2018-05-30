@@ -2,7 +2,7 @@
  * @Author: wakouboy
  * @Date:   2017-06-13 20:33:17
  * @Last Modified by:   wakouboy
- * @Last Modified time: 2017-06-18 16:54:29
+ * @Last Modified time: 2018-05-29 23:14:22
  */
 
 'use strict';
@@ -15,7 +15,9 @@ var Subgraph = function(svg, index, graph, w, h, width, height, rowNum, config) 
         // console.log(d3.select)
     index += 60 // 从靠近头部处开始移动
    
-    var start = [-w * 2 - delay, height / 2 - h / 2]
+    // var start = [-w * 2 - delay, height / 2 - h / 2]
+    console.log(delay)
+    var start = [w * 2 + delay, height / 2 - h / 2]
     var points = []
     var end = calPosition(width, height, rowNum, index, w, h)
     if (delay != 0) {

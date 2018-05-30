@@ -2,7 +2,7 @@
  * @Author: wakouboy
  * @Date:   2017-06-13 19:15:36
  * @Last Modified by:   wakouboy
- * @Last Modified time: 2017-06-19 22:13:18
+ * @Last Modified time: 2018-05-30 00:04:52
  */
 
 'use strict';
@@ -25,7 +25,8 @@ var GraphView = function() {
         .attr('id', 'canvas') //.attr('transform', 'translate(0, ' + TextHeight + ')')
     self.paddingTop = TextHeight
 
-    self.startPosition = self.width / 3
+    // self.startPosition = 0
+   
     self.init()
 
 }
@@ -35,11 +36,12 @@ GraphView.prototype.init = function() {
     var rowNum = self.rowNum
     self.sgHeight = (self.height - self.paddingTop) / rowNum
     self.sgWidth = self.sgHeight
-
+    self.startPosition = self.width - self.sgWidth * 3
     // var colNum = self.colNum = Math.floor(self.width / self.sgWidth) //
     self.colNum = self.rowNum
     var colNum = self.colNum
-    var left = self.width - colNum * self.sgWidth
+    // var left = self.width - colNum * self.sgWidth
+    var right = self.width - colNum * self.sgWidth
 
 
     //         var g = self.svg.append('g').attr('transform', 'translate(' + (left + j*self.sgWidth) + ',' + i * self.sgHeight + ')')
@@ -153,7 +155,7 @@ GraphView.prototype.parseData = function(data) { // 从单一的流数据中提�
                 self.colNumArray[self.currentColumn] = 0
                 self.currentRow = 0
                 self.svg.append('g').attr('class', 'columng').attr('id', 'column' + self.currentColumn)
-                    .attr('transform', 'translate(' + (self.startPosition - self.currentColumn * self.sgWidth) + ',0)')
+                    .attr('transform', 'translate(' + (self.startPosition + self.currentColumn * self.sgWidth) + ',0)')
             } else {
                 self.currentRow = self.colNumArray[self.currentColumn] + 1
                 self.colNumArray[self.currentColumn] = self.currentRow
@@ -163,8 +165,17 @@ GraphView.prototype.parseData = function(data) { // 从单一的流数据中提�
         }
 
     }
+    // console.log('row', self.currentRow)
+    var vertical = 0
+    if (self.currentRow == 0) {
+        vertical = self.height / 2 - self.sgHeight / 2 + self.paddingTop
+    } else if (self.currentRow % 2 == 1) {
+        vertical = self.height / 2 - self.sgHeight / 2 - (self.currentRow + 1) / 2 * self.sgHeight + self.paddingTop
+    } else {
+        vertical = self.height / 2 - self.sgHeight / 2 + (self.currentRow) / 2 * self.sgHeight + self.paddingTop
+    }
 
-    var position = [self.startPosition - self.currentColumn * self.sgWidth, self.currentRow * self.sgHeight + self.paddingTop]
+    var position = [self.startPosition + self.currentColumn * self.sgWidth, vertical]
         // if (self.currentRow == 0) {
         //     self.svg.append('text')
         //         .attr('x', position[0])

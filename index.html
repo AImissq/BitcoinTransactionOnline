@@ -3,9 +3,9 @@
 <head>
     <title>Bitcoin Transaction Visualization</title>
     <meta charset="utf-8" /> 
-    <script src="lib/jquery/external/jquery/jquery.js"></script>
-    <link rel="stylesheet" href="lib/jquery/jquery-ui.min.css">
-    <script src="lib/jquery/jquery-ui.min.js"></script>
+    <script src="./lib/jquery/jquery.js"></script>
+    <link rel="stylesheet" href="./lib/jquery/jquery-ui.min.css">
+    <script src="./lib/jquery/jquery-ui.min.js"></script>
     <link rel="stylesheet" type="text/css" href="css/realtime.css"/>
     <!-- <script type="text/javascript" src="lib/d3.js"></script> -->
     <script type="text/javascript" src="lib/d3v4.js"></script>
@@ -55,7 +55,7 @@
     .axis path,
     .axis line{
         fill: none;
-        stroke: black;
+        stroke: #999999;
         shape-rendering: crispEdges;
     }
 
@@ -77,7 +77,8 @@
         top:0%;
         height: 28px;
         width: 100%;
-        opacity: 0.8
+        /*opacity: 0.8;*/
+        background-color: #0A0A0A;
 
     }
     #content{
@@ -86,6 +87,7 @@
         top: 50px;
         left: 0%;
         width: 100%;
+        background-color: #151515;
         height:calc(79% - 50px);
     }
     #shootGroup{
@@ -97,7 +99,6 @@
         /*overflow-x: hidden;*/
         width:10%;
         height:71%;
-        border-left:2px solid #aaa;
     }
     #slider-range-min{
         position:absolute;
@@ -111,7 +112,7 @@
         top:79%;
         width: 100%; 
         height: 21%;
-        border:2px solid #aaa;
+        background-color: #0A0A0A;
     }
   /*  #info_block{
         position:absolute;
@@ -131,7 +132,7 @@
         width:180px;
         height:80px;
         /*background:white;*/
-        border:3px solid #aaa;     
+        border:3px solid #999999;     
     }
     #allTxTitle{
         position:absolute;
@@ -141,7 +142,7 @@
         overflow:hidden;
         text-align:center;
         font-weight:blod;
-        background:#aaa;
+        background:#999999
     }
     #allID{
         position:absolute;
@@ -165,7 +166,7 @@
         width:180px;
         height:100px;
         /*background:white;*/
-        border:3px solid #aaa;     
+        border:3px solid #999999;     
     }
     #txTitle{
         position:absolute;
@@ -175,7 +176,7 @@
         overflow:hidden;
         text-align:center;
         font-weight:blod;
-        background:#aaa;
+        background:#999999;
     }
     #detial{
         position:absolute;
@@ -184,7 +185,7 @@
         width: 100%;
         height:80px;
     }
-   /* #txDetial{
+/*    #txDetial{
         position:absolute;
         top:0%;
         width: 100%;
@@ -252,8 +253,8 @@
 </head>
 <body>
 
-    <div class="navbar navbar-default navbar-fixed-top">
-        <strong class="navbar-brand" id="title">Bitcoin Real-Time Transaction Visualization</strong>
+    <div class="navbar navbar-default navbar-fixed-top" style = "border: 0px">
+        <strong class="navbar-brand" id="title" style = "color: #999999; font-family: play,sans-serif">Bitcoin Real-Time Transaction Visualization</strong>
     </div>   
 
     <div id="tip">
@@ -295,42 +296,32 @@
             <p class="pTx">Statistics Info</p>
         </div>
         <div id="allID">
-            <span id="idSpan"><span>
+            <span id="idSpan" style = "color: #999999"><span>
         </div>
         <div id="allAmount">
             <img src="image/bit.png" width="20" height="20">
-            <span id="amountSpan"><span>
+            <span id="amountSpan" style = "color: #999999"><span>
         </div>
     </div>
 
     <div id="LatestTxInfo">
         <div id="txTitle">
-            <p class="pTx">Latest Transaction</p>
+            <p class="pTx" >Latest Transaction</p>
         </div>
         <div id="detial">
-       <!--  <div id="txDetial">
-            <img src="image/tx.png" width="20" height="20">
-        </div> -->
         <div id="bitDetial">
             <img src="image/bit.png" width="20" height="20">
-            <span id="bitSpan"><span>
+            <span id="bitSpan" style = "color: #999999"><span>
         </div>
         <div id="timeDetial">
             <div id="timeLeftDiv">
                 <img src="image/time.png" width="20" height="20">
             </div>
             <div id="timeRightDiv">
-                <span id="timeSpan"><span>
+                <span id="timeSpan" style = "color: #999999"><span>
             </div>
                 
         </div>
-        <!-- <div id="ipDetial">
-            <img src="image/time.png" width="20" height="20">
-        </div> -->
-        <!-- <div id="addrDetial">
-            <img src="image/addr.png" width="20" height="20">
-            <span id="addrSpan"><span>
-        </div> -->
     </div>
 
     <script type="text/javascript" src="js/datacenter.js"></script>
