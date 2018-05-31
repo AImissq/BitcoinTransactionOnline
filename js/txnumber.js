@@ -2,7 +2,7 @@
  * @Author: wakouboy
  * @Date:   2017-06-16 15:33:27
  * @Last Modified by:   wakouboy
- * @Last Modified time: 2018-05-31 14:08:23
+ * @Last Modified time: 2018-05-31 14:11:22
  */
 
 'use strict';
@@ -48,7 +48,7 @@ var NumberVV = function() {
       .style('fill', 'black')
       .style('font-family', 'sans-serif')
 
-var txt = ['1-1', '1-M', 'M-1', 'M-M']
+var txt = ['1-1', 'M-1', '1-M', 'M-M']
 viewg.select('.xaxis').selectAll('text').text(function(d, i){
     return txt[i]
 })

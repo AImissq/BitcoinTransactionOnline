@@ -2,7 +2,7 @@
  * @Author: wakouboy
  * @Date:   2017-06-16 15:33:27
  * @Last Modified by:   wakouboy
- * @Last Modified time: 2018-05-31 14:08:38
+ * @Last Modified time: 2018-05-31 14:14:30
  */
 
 'use strict';
@@ -60,6 +60,7 @@ Timeline.prototype.init = function(startTime) {
 
     self.xAxis = d3.axisBottom(self.xScale)
         .ticks(10)
+        .tickFormat(d3.timeFormat("%H:%M"))
 
 
     svg.append("g")
