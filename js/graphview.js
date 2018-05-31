@@ -2,7 +2,7 @@
  * @Author: wakouboy
  * @Date:   2017-06-13 19:15:36
  * @Last Modified by:   wakouboy
- * @Last Modified time: 2018-05-31 11:11:01
+ * @Last Modified time: 2018-05-31 14:04:17
  */
 
 'use strict';
@@ -69,6 +69,7 @@ GraphView.prototype.getMessage = function(message) {
 GraphView.prototype.parseData = function(data) { // 从单一的流数据中提取出graph的结构
     var self = this
     var hash = data.x.hash
+    console.log(data)
         //如果输入的次数大于1则加上表示交易的那个点
     var nodes = []
     var edges = []
@@ -136,6 +137,32 @@ GraphView.prototype.parseData = function(data) { // 从单一的流数据中提�
         })
         edgeNum += 1
     }
+    if(data.x.inputs.length ==1 && data.x.out.length ==1) {
+        AddressDis[0] += 1
+    }
+    if(data.x.inputs.length > 1 && data.x.out.length ==1) {
+        AddressDis[1] += 1
+    }
+    if(data.x.inputs.length ==1 && data.x.out.length > 1) {
+        AddressDis[2] += 1
+    }
+    if(data.x.inputs.length > 1 && data.x.out.length > 1) {
+        AddressDis[3] += 1
+    }
+    if(data.amount < 1) {
+        AmountDis[0] += 1
+    }
+    if(data.amount < 10 && data.amount>=1) {
+        AmountDis[1] += 1
+    }
+    if(data.amount < 100 && data.amount >= 10) {
+        AmountDis[2] += 1
+    }
+    if(data.amount > 100) {
+        AmountDis[3] += 1
+    }
+    AmountView.update(AmountDis)
+    NumberView.update(AddressDis)
     var graph = { 'nodes': nodes, 'links': edges }
     var sLen = self.subgraphData.length
     if (sLen == 0) {

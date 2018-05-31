@@ -2,7 +2,7 @@
  * @Author: wakouboy
  * @Date:   2017-06-13 18:52:58
  * @Last Modified by:   wakouboy
- * @Last Modified time: 2018-05-30 17:26:23
+ * @Last Modified time: 2018-05-31 14:02:54
  */
 
 'use strict';
@@ -28,3 +28,8 @@ window.columnGTransform = {}
 window.TimelineView = new Timeline()
 window.GraphView = new GraphView()
 window.DataCenter = new DataCenter()
+window.AmountView = new Amount()
+window.NumberView = new NumberVV()
+
+window.AddressDis = [0, 0, 0, 0] // 1-1, 1->m, m->1, m->m
+window.AmountDis = [0, 0, 0, 0] // <1, 1~10, 10~100, >100

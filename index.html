@@ -1,42 +1,41 @@
-<!DOCTYPE html>  
+<!DOCTYPE html>
 <html>
+
 <head>
     <title>Bitcoin Transaction Visualization</title>
-    <meta charset="utf-8" /> 
+    <meta charset="utf-8" />
     <script src="./lib/jquery/jquery.js"></script>
     <link rel="stylesheet" href="./lib/jquery/jquery-ui.min.css">
     <script src="./lib/jquery/jquery-ui.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="css/realtime.css"/>
+    <link rel="stylesheet" type="text/css" href="css/realtime.css" />
     <!-- <script type="text/javascript" src="lib/d3.js"></script> -->
     <script type="text/javascript" src="lib/d3v4.js"></script>
     <script type="text/javascript" src="lib/velocity.js"></script>
     <script type="text/javascript" src="lib/calculate-pixel-size.min.js"></script>
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
     <script src="lib/bootstrap.min.js"></script>
     <style type="text/css">
+  /*  .axis {
+        font: 10px;
+    }
+*/
 
-    .axis {
-      font: 10px;
-    }
-    text {
-        /*stroke: #999999;*/
-        /*font-family: Times New Roman, sans-serif;*/
-    }
-    .axis path,
+
+  /*  .axis path,
     .axis line {
-      fill: none;
-      stroke: #000;
-      shape-rendering: crispEdges;
+        fill: none;
+        stroke: #000;
+        shape-rendering: crispEdges;
     }
+
     .axis text {
-        color: #999999;
+        /*color: #999999;*/
         /*fill: none;*/
         /*font-family: Times New Roman, sans-serif;*/
-    }
+    /*}*/
 
 
-    .ui-slider-tooltip{
+    .ui-slider-tooltip {
         /*background: url(http://s1.postimg.org/vsg0yj2mj/tooltip.png) no-repeat 50% 50%;*/
         position: absolute;
         display: block;
@@ -48,20 +47,22 @@
         color: grey;
         font: 15px Arial, sans-serif;
     }
-   .ui-slider-handle {
+
+    .ui-slider-handle {
         position: absolute;
         z-index: 2;
         width: 29px;
         height: 31px;
         cursor: pointer;
-               /*background: url('http://s24.postimg.org/lltizgrj5/handler.png') no-repeat 50% 50%;*/
+        /*background: url('http://s24.postimg.org/lltizgrj5/handler.png') no-repeat 50% 50%;*/
         outline: none;
         top: -7px;
         color: white;
         margin-left: -12px;
     }
+
     .axis path,
-    .axis line{
+    .axis line {
         fill: none;
         stroke: #999999;
         shape-rendering: crispEdges;
@@ -72,6 +73,17 @@
         font-size: 11px;
     }
 
+    .saxis path,
+    .saxis line {
+        fill: none;
+        stroke: #999999;
+        shape-rendering: crispEdges;
+    }
+
+    .saxis text {
+        font-family: sans-serif;
+        font-size: 8px;
+    }
     /*.MyRect {
         fill: grey;
     }*/
@@ -80,49 +92,53 @@
         fill: black;
         text-anchor: middle;
     }
-    .navbar{
-        position:absolute;
-        top:0%;
+
+    .navbar {
+        position: absolute;
+        top: 0%;
         height: 28px;
         width: 100%;
         /*opacity: 0.8;*/
         /*background-color: #0A0A0A;*/
-
     }
-    #content{
-        position:absolute;
+
+    #content {
+        position: absolute;
         overflow: hidden;
         top: 50px;
         left: 0%;
         width: 100%;
         /*background-color: #151515;*/
-        height:calc(79% - 50px);
+        height: calc(79% - 50px);
     }
-    #shootGroup{
-        position:absolute;
-        top:8%;
-        right:0px;
+
+    #shootGroup {
+        position: absolute;
+        top: 8%;
+        right: 0px;
         background: white;
-        overflow:scroll;
+        overflow: scroll;
         /*overflow-x: hidden;*/
-        width:10%;
-        height:71%;
+        width: 10%;
+        height: 71%;
     }
-    #slider-range-min{
-        position:absolute;
-        top:95%;
-        right :5%;
+
+    #slider-range-min {
+        position: absolute;
+        top: 95%;
+        right: 5%;
         width: 15%;
     }
-    #timeBar{
-        position:absolute;
+
+    #timeBar {
+        position: absolute;
         overflow: hidden;
-        top:79%;
-        width: 100%; 
+        top: 79%;
+        width: 100%;
         height: 21%;
         /*background-color: #0A0A0A;*/
     }
-  /*  #info_block{
+    /*  #info_block{
         position:absolute;
         top:250px;
         left:5px;
@@ -133,145 +149,174 @@
         border:1px solid #aaa;
         opacity: 0.5
     }*/
-    #allInfo{
-        position:absolute;
-        top:7%;
-        left:5px;
-        width:180px;
-        height:80px;
+
+    #allInfo {
+        position: absolute;
+        top: 7%;
+        left: 5px;
+        width: 180px;
+        height: 80px;
         /*background:white;*/
-        border:3px solid #999999;     
-    }
-    #allTxTitle{
-        position:absolute;
-        top:0px;
-        width: 100%;
-        height:20px;
-        overflow:hidden;
-        text-align:center;
-        font-weight:blod;
-        background:#999999
-    }
-    #allID{
-        position:absolute;
-        top:20px;
-        padding-left: 5px;
-        width: 100%;
-        height:20px;
-    }
-    #allAmount{
-        position:absolute;
-        top:45px;
-        padding-left: 5px;
-        width: 100%;
-        height:40px;
+        border: 3px solid #999999;
     }
 
-    #LatestTxInfo{
-        position:absolute;
-        top:18%;
-        left:5px;
-        width:180px;
-        height:100px;
-        /*background:white;*/
-        border:3px solid #999999;     
-    }
-    #txTitle{
-        position:absolute;
-        top:0px;
+    #allTxTitle {
+        position: absolute;
+        top: 0px;
         width: 100%;
-        height:20px;
-        overflow:hidden;
-        text-align:center;
-        font-weight:blod;
-        background:#999999;
+        height: 20px;
+        overflow: hidden;
+        text-align: center;
+        font-weight: blod;
+        background: #999999
     }
-    #detial{
-        position:absolute;
-        top:20px;
+
+    #allID {
+        position: absolute;
+        top: 20px;
         padding-left: 5px;
         width: 100%;
-        height:80px;
+        height: 20px;
     }
-/*    #txDetial{
+
+    #allAmount {
+        position: absolute;
+        top: 45px;
+        padding-left: 5px;
+        width: 100%;
+        height: 60px;
+    }
+
+    #LatestTxInfo {
+        position: absolute;
+        top: calc(7% + 100px);
+        left: 5px;
+        width: 180px;
+        height: 80px;
+        /*background:white;*/
+        border: 3px solid #999999;
+    }
+     #SumTxNum {
+        position: absolute;
+        top: calc(7% + 100px + 80px + 20px);
+        left: 5px;
+        width: 180px;
+        height: 100px;
+        /*background:white;*/
+        border: 3px solid #999999;
+    }
+
+    #SumTxAmt {
+        position: absolute;
+        top: calc(7% + 100px + 80px + 20px + 100px + 20px);
+        left: 5px;
+        width: 180px;
+        height: 100px;
+        /*background:white;*/
+        border: 3px solid #999999;
+    }
+
+   
+
+    #txTitle {
+        position: absolute;
+        top: 0px;
+        width: 100%;
+        height: 20px;
+        overflow: hidden;
+        text-align: center;
+        font-weight: blod;
+        background: #999999;
+    }
+
+    #detial {
+        position: absolute;
+        top: 20px;
+        padding-left: 5px;
+        width: 100%;
+        height: 80px;
+    }
+    /*    #txDetial{
         position:absolute;
         top:0%;
         width: 100%;
         height:90%;
     }*/
-    #bitDetial{
-        position:absolute;
-        top:0px;
+
+    #bitDetial {
+        position: absolute;
+        top: 0px;
         width: 100%;
-        height:20px;
-    }
-    #timeDetial{
-        position:absolute;
-        top:25px;
-        width: 100%;
-        height:40px;
-    }
-    #timeLeftDiv{
-        position:absolute;
-        top:0px;
-        height:100%;
-    }
-    #timeRightDiv{
-        position:absolute;
-        top:0px;
-        left: 25px;
-        height:100%;
-    }
-    #addrDetial{
-        position:absolute;
-        top:65px;
-        width: 100%;
-        height:35px;
+        height: 20px;
     }
 
-    .buttonGroup{
-        position:absolute;
-        top:2%;
-        left:8%;
+    #timeDetial {
+        position: absolute;
+        top: 25px;
         width: 100%;
-        height:10%;
+        height: 40px;
     }
-    
-    .classGroup{
-        width:200px;
-        height:130px;
-        border-bottom:1px solid #aaa;
+
+    #timeLeftDiv {
+        position: absolute;
+        top: 0px;
+        height: 100%;
     }
-    #ex1{
-        position:absolute;
-        top:0%;
-        right:20%;
+
+    #timeRightDiv {
+        position: absolute;
+        top: 0px;
+        left: 25px;
+        height: 100%;
+    }
+
+    #addrDetial {
+        position: absolute;
+        top: 65px;
+        width: 100%;
+        height: 35px;
+    }
+
+    .buttonGroup {
+        position: absolute;
+        top: 2%;
+        left: 8%;
+        width: 100%;
+        height: 10%;
+    }
+
+    .classGroup {
+        width: 200px;
+        height: 130px;
+        border-bottom: 1px solid #aaa;
+    }
+
+    #ex1 {
+        position: absolute;
+        top: 0%;
+        right: 20%;
         width: 100%;
         overflow: hidden;
     }
-    
     /*#ipDetial{
         position:absolute;
         top:60%;
         width: 100%;
         height:75%;
     }*/
-    
     </style>
 </head>
+
 <body>
-
-    <div class="navbar navbar-default navbar-fixed-top" style = "border: 0px">
-        <strong class="navbar-brand" id="title" style = "color: #999999; font-family: play,sans-serif">Bitcoin Real-Time Transaction Visualization</strong>
-    </div>   
-
+    <div class="navbar navbar-default navbar-fixed-top" style="border: 0px">
+        <strong class="navbar-brand" id="title" style="color: #999999; font-family: play,sans-serif">Bitcoin Real-Time Transaction Visualization</strong>
+    </div>
     <div id="tip">
     </div>
-
     <div id="content">
-               <!-- <div id="slider-range-min"></div> -->
+        <!-- <div id="slider-range-min"></div> -->
     </div>
-   <!--  <div id="shootGroup">
+    <!--  <div id="shootGroup">
             <table border="1" style="width:100%;height:100%;overflow-y:scroll;position:absolute;">
             <tr>
               <td>100</td>
@@ -286,10 +331,10 @@
     </div> -->
     <div id="timeBar">
         <div class="buttonGroup">
-                <button type="button" class="btn btn-default" aria-label="Left Align" id="playButton">
-                    <span class="glyphicon glyphicon-pause" id="playSpan" aria-hidden="true"></span>
-                </button>
-                <!-- <button type="button" class="btn btn-default" aria-label="Left Align" id="forwardButton">
+            <button type="button" class="btn btn-default" aria-label="Left Align" id="playButton">
+                <span class="glyphicon glyphicon-pause" id="playSpan" aria-hidden="true"></span>
+            </button>
+            <!-- <button type="button" class="btn btn-default" aria-label="Left Align" id="forwardButton">
                     <span class="glyphicon glyphicon-forward" aria-hidden="true"></span>
                 </button>
 
@@ -298,7 +343,6 @@
                 </button> -->
         </div>
     </div>
-
     <div id="allInfo">
         <div id="allTxTitle">
             <p class="pTx">Statistics Info</p>
@@ -317,18 +361,37 @@
             <p class="pTx" >Latest Transaction</p>
         </div>
         <div id="detial">
-        <div id="bitDetial">
-            <img src="image/bit.png" width="20" height="20">
-            <span id="bitSpan" ><span>
+            <div id="bitDetial">
+                <img src="image/bit.png" width="20" height="20"/>
+                <span id="bitSpan" ></span>
+            </div>
+
+            <div id="timeDetial">
+                <div id="timeLeftDiv">
+                    <img src="image/time.png" width="20" height="20" />
+                </div>
+        
+                <div id="timeRightDiv">
+                    <span id="timeSpan"></span>     
+                </div>
+             </div>
         </div>
-        <div id="timeDetial">
-            <div id="timeLeftDiv">
-                <img src="image/time.png" width="20" height="20">
-            </div>
-            <div id="timeRightDiv">
-                <span id="timeSpan"><span>
-            </div>
-                
+    </div>
+
+    <div id = 'SumTxAmt'> 
+        <div id="txTitle">
+            <p class="pTx" >Transaction Value Distribution</p>
+        </div>
+        <div id = 'txvalueview' style='position: absolute;width:100%; top:20%;height: 80%;'>
+        </div>
+    </div>
+
+
+    <div id = 'SumTxNum'> 
+        <div id="txTitle">
+            <p class="pTx" >Transaction Address Distribution</p>
+        </div>
+        <div id = 'txnumview' style='position: absolute;width:100%; top:20%;height: 80%;'>
         </div>
     </div>
 
@@ -338,7 +401,8 @@
     <script type="text/javascript" src="js/timeline.js"></script>
     <script type="text/javascript" src="js/graphview.js"></script>
     <script type="text/javascript" src="js/config.js"></script>
-
+    <script type="text/javascript" src="js/txnumber.js"></script>
+    <script type="text/javascript" src="js/amount.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
     <script type="text/javascript">
         //self.drawFigure=new drawTimeBar()
@@ -358,4 +422,3 @@
 
 </body>
 </html>
-

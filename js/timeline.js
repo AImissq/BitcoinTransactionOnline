@@ -2,7 +2,7 @@
  * @Author: wakouboy
  * @Date:   2017-06-16 15:33:27
  * @Last Modified by:   wakouboy
- * @Last Modified time: 2018-05-30 17:39:00
+ * @Last Modified time: 2018-05-31 14:08:38
  */
 
 'use strict';
@@ -74,8 +74,14 @@ Timeline.prototype.init = function(startTime) {
         .attr("transform", "translate(" + self.padding.left + "," + self.padding.top + ")")
         .call(d3.axisLeft(self.yScale).ticks(5).tickSize(3))
         .append("text")
-        .text("Num")
-        .attr('transform', 'translate(' + 30 + ', 0)');
+        .attr("y", 0)
+        .attr("dy", "0.71em")
+        .attr('dx', "1em")
+        .attr("text-anchor", "begin")
+        .text("N")
+        .style('fill', 'black')
+         .style('font-family', 'sans-serif')
+        // .attr('transform', 'translate(' + 50 + ', 0)');
 
     for (var i = 0; i < self.slotsLen; i++) {
         svg.append('rect')
