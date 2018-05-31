@@ -7,6 +7,8 @@
     <script src="./lib/jquery/jquery.js"></script>
     <link rel="stylesheet" href="./lib/jquery/jquery-ui.min.css">
     <script src="./lib/jquery/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="./css/jquery.dataTables.min.css">
+    <script src="./lib/jquery.dataTables.js"></script>
     <link rel="stylesheet" type="text/css" href="css/realtime.css" />
     <!-- <script type="text/javascript" src="lib/d3.js"></script> -->
     <script type="text/javascript" src="lib/d3v4.js"></script>
@@ -15,13 +17,11 @@
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <script src="lib/bootstrap.min.js"></script>
     <style type="text/css">
-  /*  .axis {
+    /*  .axis {
         font: 10px;
     }
 */
-
-
-  /*  .axis path,
+    /*  .axis path,
     .axis line {
         fill: none;
         stroke: #000;
@@ -30,10 +30,9 @@
 
     .axis text {
         /*color: #999999;*/
-        /*fill: none;*/
-        /*font-family: Times New Roman, sans-serif;*/
+    /*fill: none;*/
+    /*font-family: Times New Roman, sans-serif;*/
     /*}*/
-
 
     .ui-slider-tooltip {
         /*background: url(http://s1.postimg.org/vsg0yj2mj/tooltip.png) no-repeat 50% 50%;*/
@@ -106,8 +105,8 @@
         position: absolute;
         overflow: hidden;
         top: 50px;
-        left: 0%;
-        width: 100%;
+        left: 385px;
+        width: calc(100% - 385px);
         /*background-color: #151515;*/
         height: calc(79% - 50px);
     }
@@ -133,8 +132,10 @@
     #timeBar {
         position: absolute;
         overflow: hidden;
+        left: 385px;
         top: 79%;
-        width: 100%;
+        width: calc(100% - 385px);
+        ;
         height: 21%;
         /*background-color: #0A0A0A;*/
     }
@@ -157,7 +158,8 @@
         width: 180px;
         height: 80px;
         /*background:white;*/
-        border: 3px solid #999999;
+        border: 1px solid #999999;
+        border-radius: 3px;
     }
 
     #allTxTitle {
@@ -173,7 +175,7 @@
 
     #allID {
         position: absolute;
-        top: 20px;
+        top: 45px;
         padding-left: 5px;
         width: 100%;
         height: 20px;
@@ -181,42 +183,55 @@
 
     #allAmount {
         position: absolute;
-        top: 45px;
+        top: 20px;
         padding-left: 5px;
         width: 100%;
-        height: 60px;
+        height: 100px;
     }
 
     #LatestTxInfo {
         position: absolute;
-        top: calc(7% + 100px);
-        left: 5px;
+        top: calc(7%);
+        left: 200px;
         width: 180px;
         height: 80px;
         /*background:white;*/
-        border: 3px solid #999999;
+        border: 1px solid #999999;
+        border-radius: 3px;
     }
-     #SumTxNum {
+
+    #SumTxNum {
         position: absolute;
-        top: calc(7% + 100px + 80px + 20px);
+        top: calc(7% + 100px);
         left: 5px;
         width: 180px;
         height: 100px;
         /*background:white;*/
-        border: 3px solid #999999;
+        border: 1px solid #999999;
+        border-radius: 3px;
+    }
+
+    #table {
+        position: absolute;
+        top: calc(7% + 220px);
+        left: 5px;
+        width: 375px;
+        height: calc(92% - 220px);
+        /*background: red;*/
     }
 
     #SumTxAmt {
         position: absolute;
-        top: calc(7% + 100px + 80px + 20px + 100px + 20px);
-        left: 5px;
+        top: calc(7% + 100px);
+        left: 200px;
         width: 180px;
         height: 100px;
         /*background:white;*/
-        border: 3px solid #999999;
+        border: 1px solid #999999;
+        border-radius: 3px;
     }
 
-   
+
 
     #txTitle {
         position: absolute;
@@ -304,6 +319,21 @@
         width: 100%;
         height:75%;
     }*/
+    #table {
+        overflow: scroll;
+        border: 1px solid #999999;
+        border-radius: 3px;
+    }
+    table#example{
+        width: 100%;
+        height: 100%;
+        table-layout:fixed;
+    }
+    th, td{
+        text-align: center;
+        font-family: sans-serif;
+        font-size: 10px;
+    }
     </style>
 </head>
 
@@ -312,6 +342,30 @@
         <strong class="navbar-brand" id="title" style="color: #999999; font-family: play,sans-serif">Bitcoin Real-Time Transaction Visualization</strong>
     </div>
     <div id="tip">
+    </div>
+    <div id='table'>
+        <table id="example"  style="width:100%">
+            <thead>
+                <tr>
+                    <th>Index</th>
+                    <th>Bitcoin</th>
+                    <th>Input</th>
+                    <th>Output</th>
+                    <th>Time</th>
+                </tr>
+                <tbody id = 'tablebody'>
+                </tbody>
+            </thead>
+            <!--  <tfoot>
+                    <tr>
+                        <th>Column 1</th>
+                        <th>Column 2</th>
+                        <th>Column 3</th>
+                        <th>Column 4</th>
+                        <th>Column 5</th>
+                    </tr>
+                </tfoot> -->
+        </table>
     </div>
     <div id="content">
         <!-- <div id="slider-range-min"></div> -->
@@ -347,55 +401,53 @@
         <div id="allTxTitle">
             <p class="pTx">Statistics Info</p>
         </div>
-        <div id="allID">
-            <span id="idSpan"><span>
-        </div>
         <div id="allAmount">
             <img src="image/bit.png" width="20" height="20">
             <span id="amountSpan"><span>
         </div>
+        <div id="allID">
+              <div id="timeRightDiv">
+                    <span id="idSpan"></span>
+        </div>
+        <div id="timeLeftDiv">
+            <img src="image/time.png" width="20" height="20" />
+        </div>
+        <!-- <span id="idSpan"><span> -->
     </div>
-
+    </div>
     <div id="LatestTxInfo">
         <div id="txTitle">
-            <p class="pTx" >Latest Transaction</p>
+            <p class="pTx">Latest Transaction</p>
         </div>
         <div id="detial">
             <div id="bitDetial">
-                <img src="image/bit.png" width="20" height="20"/>
-                <span id="bitSpan" ></span>
+                <img src="image/bit.png" width="20" height="20" />
+                <span id="bitSpan"></span>
             </div>
-
             <div id="timeDetial">
                 <div id="timeLeftDiv">
                     <img src="image/time.png" width="20" height="20" />
                 </div>
-        
                 <div id="timeRightDiv">
-                    <span id="timeSpan"></span>     
+                    <span id="timeSpan"></span>
                 </div>
-             </div>
+            </div>
         </div>
     </div>
-    <div id = 'SumTxNum'> 
+    <div id='SumTxNum'>
         <div id="txTitle">
-            <p class="pTx" >Transaction Pattern</p>
+            <p class="pTx">Transaction Pattern</p>
         </div>
-        <div id = 'txnumview' style='position: absolute;width:100%; top:20%;height: 80%;'>
+        <div id='txnumview' style='position: absolute;width:100%; top:20%;height: 80%;'>
         </div>
     </div>
-
-    <div id = 'SumTxAmt'> 
+    <div id='SumTxAmt'>
         <div id="txTitle">
-            <p class="pTx" >Transaction Value </p>
+            <p class="pTx">Transaction Value </p>
         </div>
-        <div id = 'txvalueview' style='position: absolute;width:100%; top:20%;height: 80%;'>
+        <div id='txvalueview' style='position: absolute;width:100%; top:20%;height: 80%;'>
         </div>
     </div>
-
-
-   
-
     <script type="text/javascript" src="js/datacenter.js"></script>
     <!-- <script type="text/javascript" src="js/subgraph.js"></script> -->
     <script type="text/javascript" src="js/subgraph_static.js"></script>
@@ -406,20 +458,17 @@
     <script type="text/javascript" src="js/amount.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
     <script type="text/javascript">
-        //self.drawFigure=new drawTimeBar()
-        
-        /*$('#ex1').slider({
-            formatter: function(value) {
-                return 'Current value: ' + value;
-            }
-        });*/
-        //var main=new drawMainView()
-        //main.updataLimit(10)
-        //var main=new drawMainViewHistory(50)
+    //self.drawFigure=new drawTimeBar()
 
-        
-        
+    /*$('#ex1').slider({
+        formatter: function(value) {
+            return 'Current value: ' + value;
+        }
+    });*/
+    //var main=new drawMainView()
+    //main.updataLimit(10)
+    //var main=new drawMainViewHistory(50)
     </script>
-
 </body>
+
 </html>

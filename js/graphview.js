@@ -2,7 +2,7 @@
  * @Author: wakouboy
  * @Date:   2017-06-13 19:15:36
  * @Last Modified by:   wakouboy
- * @Last Modified time: 2018-05-31 14:04:17
+ * @Last Modified time: 2018-05-31 18:31:36
  */
 
 'use strict';
@@ -36,7 +36,7 @@ GraphView.prototype.init = function() {
     var rowNum = self.rowNum
     self.sgHeight = (self.height - self.paddingTop) / rowNum
     self.sgWidth = self.sgHeight
-    self.startPosition = self.width - self.sgWidth * 3
+    self.startPosition = self.width - self.sgWidth * 2
     // var colNum = self.colNum = Math.floor(self.width / self.sgWidth) //
     self.colNum = self.rowNum
     var colNum = self.colNum

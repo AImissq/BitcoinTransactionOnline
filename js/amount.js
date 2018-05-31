@@ -2,7 +2,7 @@
  * @Author: wakouboy
  * @Date:   2017-06-16 15:33:27
  * @Last Modified by:   wakouboy
- * @Last Modified time: 2018-05-31 14:08:30
+ * @Last Modified time: 2018-05-31 17:43:37
  */
 
 'use strict';
@@ -56,7 +56,7 @@ viewg.select('.xaxis').selectAll('text').text(function(d, i){
 }
 
 Amount.prototype.update = function(data) {
-    console.log(data)
+    // console.log(data)
     var self = this
     var g = self.viewg,
         width = self.width,

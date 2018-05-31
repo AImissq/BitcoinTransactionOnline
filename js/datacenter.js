@@ -2,7 +2,7 @@
  * @Author: wakouboy
  * @Date:   2017-06-13 18:51:00
  * @Last Modified by:   wakouboy
- * @Last Modified time: 2018-05-31 11:09:47
+ * @Last Modified time: 2018-05-31 18:29:57
  */
 
 'use strict';
@@ -32,10 +32,24 @@ DataCenter.prototype.init = function() {
             $("#playSpan").attr("class", "glyphicon glyphicon-pause");
         }
     });
+    //  $("#example").dataTable({
+    //     "paging":   false,
+    //     "ordering": false,
+    //     "info":     false,
+    //     'search': false
+    // })
     self.config()
     self.startSocket()
 }
 
+DataCenter.prototype.buildTable = function(data) {
+     let str = ''
+     for(let i in data) {
+        str = str + '<td>' + data[i] + '</td>'
+     }
+     $('#tablebody').prepend('<tr>' + str + '</tr>')
+
+}
 DataCenter.prototype.sendMessage = function(data) {
     GraphView.getMessage(data)
 }
@@ -141,6 +155,7 @@ DataCenter.prototype.parseData = function(message) {
         amount_in += data.x.inputs[i].prev_out.value;
     }
     amount_in *= 1e-8;
+    console.log(data)
     var fee = amount_in - amount
     var myip = data.x.relayed_by
     var info = "Amount: " + (Math.round(amount * 1e8) / 1e8) + "BTC<br>Fee: " + fee + "BTC<br>Time: " + self.timeConverter(data.x.time) + "<br>Relayed by: " + myip + "<br><br>Click to view on blockchain.info";
@@ -153,7 +168,7 @@ DataCenter.prototype.parseData = function(message) {
     self.tx_num += 1
     self.total_amount += amount
 
-
+    self.buildTable([data.x.tx_index, amount.toFixed(3), data.x.inputs.length, data.x.out.length, self.timeConverter2(data.x.time)])
 
     // document.getElementById("idSpan").innerHTML = timeTip
     // document.getElementById("timeSpan").innerHTML = time
@@ -218,7 +233,7 @@ DataCenter.prototype.showTime = function() {
     if (sec >= 0 && sec <= 9) {
         sec = "0" + sec;
     }
-    var timeTip = minute + ':' + sec
+    var timeTip = ' ' + minute + ':' + sec
     document.getElementById("idSpan").innerHTML = timeTip
 }
 
@@ -252,6 +267,38 @@ DataCenter.prototype.timeConverter = function(UNIX_timestamp) {
     }
 
     var currentdate = year + seperator1 + month + seperator1 + strDate + " " + hour + seperator2 + minute + seperator2 + sec;
+    return currentdate;
+}
+DataCenter.prototype.timeConverter2 = function(UNIX_timestamp) {
+    var time = [];
+    var date = new Date(UNIX_timestamp * 1000);
+    var seperator1 = "-";
+    var seperator2 = ":";
+    var year = date.getFullYear();
+    var month = date.getMonth() + 1;
+    var strDate = date.getDate();
+
+    var hour = date.getHours();
+    var minute = date.getMinutes();
+    var sec = date.getSeconds();
+
+    if (month >= 1 && month <= 9) {
+        month = "0" + month;
+    }
+    if (strDate >= 0 && strDate <= 9) {
+        strDate = "0" + strDate;
+    }
+    if (hour >= 0 && hour <= 9) {
+        hour = "0" + hour;
+    }
+    if (minute >= 0 && minute <= 9) {
+        minute = "0" + minute;
+    }
+    if (sec >= 0 && sec <= 9) {
+        sec = "0" + sec;
+    }
+
+    var currentdate = hour + seperator2 + minute + seperator2 + sec;
     return currentdate;
 }
 
