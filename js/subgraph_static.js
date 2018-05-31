@@ -2,7 +2,7 @@
  * @Author: wakouboy
  * @Date:   2017-06-13 20:33:17
  * @Last Modified by:   wakouboy
- * @Last Modified time: 2018-05-31 11:14:38
+ * @Last Modified time: 2018-05-31 20:58:58
  */
 
 
@@ -175,8 +175,8 @@ var Subgraph = function(svg, index, graph, w, h, width, height, rowNum, config, 
         var time = config.time,
             amount = config.amount,
             total_amount = config.total_amount
-        document.getElementById("timeSpan").innerHTML = time
-        document.getElementById("bitSpan").innerHTML = Math.round(amount * 1e8) / 1e8;
+        document.getElementById("timeSpan").innerHTML = ' ' + time
+        document.getElementById("bitSpan").innerHTML = ' ' + Math.round(amount * 1e8) / 1e8;
         document.getElementById("amountSpan").innerHTML = parseInt(10000 * total_amount) / 10000;
     }
 
@@ -239,7 +239,7 @@ var Subgraph = function(svg, index, graph, w, h, width, height, rowNum, config, 
             })
             .style("opacity", 0.8)
             .style("stroke-width", "1")
-            .style("stroke", 'black')
+            .style("stroke", 'white')
             .on("click", function(d) {
                 g.selectAll(".mainCircle")
                     .style("opacity", function(q) {

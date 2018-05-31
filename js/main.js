@@ -2,7 +2,7 @@
  * @Author: wakouboy
  * @Date:   2017-06-13 18:52:58
  * @Last Modified by:   wakouboy
- * @Last Modified time: 2018-05-31 14:02:54
+ * @Last Modified time: 2018-05-31 20:10:43
  */
 
 'use strict';
@@ -13,9 +13,9 @@ window.dist = 100000
 window.addTag = 1
 window.slowTag = 1
 
-window.output_color = '#a1d99b'
-window.input_color = '#f03b20'
-window.tx_color = 'white'
+window.output_color = '#005a32'
+window.input_color = '#cb181d'
+window.tx_color = 'grey'
 
 
 window.TextWidth = calculatePixelSize('00:00:00').width

@@ -2,7 +2,7 @@
  * @Author: wakouboy
  * @Date:   2017-06-13 18:51:00
  * @Last Modified by:   wakouboy
- * @Last Modified time: 2018-05-31 18:29:57
+ * @Last Modified time: 2018-05-31 21:07:08
  */
 
 'use strict';
@@ -13,6 +13,7 @@ var DataCenter = function() {
     self.total_amount = 0 //统计从开始时间累积的交易额
     self.pretxTime = 0
     self.columnScale = {}
+    self.tdnum = 0
     self.init()
 }
 
@@ -47,7 +48,9 @@ DataCenter.prototype.buildTable = function(data) {
      for(let i in data) {
         str = str + '<td>' + data[i] + '</td>'
      }
-     $('#tablebody').prepend('<tr>' + str + '</tr>')
+     this.tdnum++
+     $('#tablebody').prepend('<tr ' + 'id=tr' + self.tdnum +  '>' + str + '</tr>')
+     $('#tr' + (this.tdnum - 100)).remove()
 
 }
 DataCenter.prototype.sendMessage = function(data) {
@@ -233,7 +236,7 @@ DataCenter.prototype.showTime = function() {
     if (sec >= 0 && sec <= 9) {
         sec = "0" + sec;
     }
-    var timeTip = ' ' + minute + ':' + sec
+    var timeTip = '&nbsp' + minute + ':' + sec
     document.getElementById("idSpan").innerHTML = timeTip
 }
 

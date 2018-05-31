@@ -319,20 +319,28 @@
         width: 100%;
         height:75%;
     }*/
+
     #table {
         overflow: scroll;
-        border: 1px solid #999999;
+        /*border: 1px solid #999999;*/
         border-radius: 3px;
     }
-    table#example{
+
+    table#example {
         width: 100%;
         height: 100%;
-        table-layout:fixed;
+        table-layout: fixed;
     }
-    th, td{
+
+    th,
+    td {
         text-align: center;
         font-family: sans-serif;
         font-size: 10px;
+    }
+
+    tr {
+        border: 1px solid #999999;
     }
     </style>
 </head>
@@ -344,16 +352,16 @@
     <div id="tip">
     </div>
     <div id='table'>
-        <table id="example"  style="width:100%">
+        <table id="example" style="width:100%">
             <thead>
                 <tr>
-                    <th>Index</th>
-                    <th>Bitcoin</th>
-                    <th>Input</th>
-                    <th>Output</th>
-                    <th>Time</th>
+                    <th>tx_index</th>
+                    <th>sent/btc</th>
+                    <th>#inputs</th>
+                    <th>#outputs</th>
+                    <th>time</th>
                 </tr>
-                <tbody id = 'tablebody'>
+                <tbody id='tablebody'>
                 </tbody>
             </thead>
             <!--  <tfoot>
@@ -406,11 +414,13 @@
             <span id="amountSpan"><span>
         </div>
         <div id="allID">
-              <div id="timeRightDiv">
-                    <span id="idSpan"></span>
-        </div>
+              
+        
         <div id="timeLeftDiv">
             <img src="image/time.png" width="20" height="20" />
+        </div>
+        <div id="timeRightDiv">
+            <span id="idSpan"></span>
         </div>
         <!-- <span id="idSpan"><span> -->
     </div>
