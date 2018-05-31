@@ -2,7 +2,7 @@
  * @Author: wakouboy
  * @Date:   2017-06-13 19:15:36
  * @Last Modified by:   wakouboy
- * @Last Modified time: 2018-05-30 00:04:52
+ * @Last Modified time: 2018-05-31 11:11:01
  */
 
 'use strict';
@@ -142,7 +142,7 @@ GraphView.prototype.parseData = function(data) { // 从单一的流数据中提�
         self.currentColumnTime = new Date(parseInt(txTime.getTime() / 1000) * 1000)
         self.colNumArray[0] = 0
         self.svg.append('g').attr('class', 'columng').attr('id', 'column' + self.currentColumn)
-            .attr('transform', 'translate(' + (self.startPosition - self.currentColumn * self.sgWidth) + ',0)')
+            .attr('transform', 'translate(' + (self.startPosition + self.currentColumn * self.sgWidth) + ',0)')
     } else {
         if (txTime.getSeconds() == self.currentColumnTime.getSeconds()) {
             self.currentRow += 1

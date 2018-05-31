@@ -2,7 +2,7 @@
  * @Author: wakouboy
  * @Date:   2017-06-16 15:33:27
  * @Last Modified by:   wakouboy
- * @Last Modified time: 2018-05-30 17:31:49
+ * @Last Modified time: 2018-05-30 17:39:00
  */
 
 'use strict';
@@ -41,7 +41,7 @@ Timeline.prototype.init = function(startTime) {
     // }
 
     for (var i = 0; i < self.slotNum; i++) {
-        self.timeSlots.push(new Date(startT - i * self.timeUnit))
+        self.timeSlots.push(new Date(startT - (self.slotNum - 1 - i) * self.timeUnit))
         self.numArr.push(0)
     }
     self.numArr[0] = 0
@@ -72,7 +72,7 @@ Timeline.prototype.init = function(startTime) {
     svg.append("g")
         .attr("class", "y axis")
         .attr("transform", "translate(" + self.padding.left + "," + self.padding.top + ")")
-        .call(d3.axisLeft(self.yScale).ticks(5))
+        .call(d3.axisLeft(self.yScale).ticks(5).tickSize(3))
         .append("text")
         .text("Num")
         .attr('transform', 'translate(' + 30 + ', 0)');

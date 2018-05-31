@@ -2,7 +2,7 @@
  * @Author: wakouboy
  * @Date:   2017-06-13 20:33:17
  * @Last Modified by:   wakouboy
- * @Last Modified time: 2018-05-30 11:26:48
+ * @Last Modified time: 2018-05-31 11:14:38
  */
 
 
@@ -60,9 +60,11 @@ var Subgraph = function(svg, index, graph, w, h, width, height, rowNum, config, 
                             var ntxt = timeConvert(new Date(currentColumnTime.getTime() - i * 1000 * GraphView.timeInterval))
                             if (columnTimeIndex[ntxt] == undefined) {
                                 svg.append('text')
-                                    .attr('x', end[0] + (w - TextWidth) / 2 + i * w)
+                                    .attr('x', end[0] + (w - TextWidth) / 2 - i * w)
                                     .attr('y', TextHeight / 2)
                                     .text(ntxt)
+                                    .style('color', '#999999')
+                                    // .style('fill', '#999999')
                                 columnTimeIndex[ntxt] = true
                             }
                         }
@@ -71,6 +73,8 @@ var Subgraph = function(svg, index, graph, w, h, width, height, rowNum, config, 
                         .attr('x', end[0] + (w - TextWidth) / 2)
                         .attr('y', TextHeight / 2)
                         .text(ctText)
+                        .style('color', '#999999')
+                        // .style('fill', '#999999')
                         .attr('id', ctText)
                     preTime = currentColumnTime
                     columnTimeIndex[ctText] = true

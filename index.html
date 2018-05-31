@@ -17,14 +17,22 @@
     <style type="text/css">
 
     .axis {
-      font: 10px sans-serif;
+      font: 10px;
     }
-
+    text {
+        /*stroke: #999999;*/
+        /*font-family: Times New Roman, sans-serif;*/
+    }
     .axis path,
     .axis line {
       fill: none;
       stroke: #000;
       shape-rendering: crispEdges;
+    }
+    .axis text {
+        color: #999999;
+        /*fill: none;*/
+        /*font-family: Times New Roman, sans-serif;*/
     }
 
 
@@ -78,7 +86,7 @@
         height: 28px;
         width: 100%;
         /*opacity: 0.8;*/
-        background-color: #0A0A0A;
+        /*background-color: #0A0A0A;*/
 
     }
     #content{
@@ -87,7 +95,7 @@
         top: 50px;
         left: 0%;
         width: 100%;
-        background-color: #151515;
+        /*background-color: #151515;*/
         height:calc(79% - 50px);
     }
     #shootGroup{
@@ -112,7 +120,7 @@
         top:79%;
         width: 100%; 
         height: 21%;
-        background-color: #0A0A0A;
+        /*background-color: #0A0A0A;*/
     }
   /*  #info_block{
         position:absolute;
@@ -296,11 +304,11 @@
             <p class="pTx">Statistics Info</p>
         </div>
         <div id="allID">
-            <span id="idSpan" style = "color: #999999"><span>
+            <span id="idSpan"><span>
         </div>
         <div id="allAmount">
             <img src="image/bit.png" width="20" height="20">
-            <span id="amountSpan" style = "color: #999999"><span>
+            <span id="amountSpan"><span>
         </div>
     </div>
 
@@ -311,14 +319,14 @@
         <div id="detial">
         <div id="bitDetial">
             <img src="image/bit.png" width="20" height="20">
-            <span id="bitSpan" style = "color: #999999"><span>
+            <span id="bitSpan" ><span>
         </div>
         <div id="timeDetial">
             <div id="timeLeftDiv">
                 <img src="image/time.png" width="20" height="20">
             </div>
             <div id="timeRightDiv">
-                <span id="timeSpan" style = "color: #999999"><span>
+                <span id="timeSpan"><span>
             </div>
                 
         </div>
