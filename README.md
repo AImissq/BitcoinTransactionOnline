@@ -6,6 +6,6 @@ Clone the repo -  git clone https://github.com/AImissq/BitcoinTransactionOnline.
 
 or download the zip file.
 
-Launch your browswe and select 'open file' browse to the repo and select index.html
+Launch your browser and select 'open file' browse to the repo and select index.html
 
 Be amazed - it's beautiful!
